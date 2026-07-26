@@ -1,23 +1,47 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Check, Heart, Minus, Plus, ShoppingBag } from 'lucide-react';
-import { getProductBySlug, products } from '@/data/catalog';
 import { useStore } from '@/context/StoreContext';
 import { WHATSAPP_NUMBER } from '@/lib/supabase';
+import { getProductBySlug, getProducts } from '@/lib/productStore';
 import { ProductCard } from '@/components/ProductCard';
 import { SectionReveal, OrnamentalDivider } from '@/components/Ornaments';
+import type { Product } from '@/types';
 
 export function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const product = getProductBySlug(slug || '');
   const { addToCart, toggleWishlist, isWishlisted } = useStore();
   const navigate = useNavigate();
 
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [activeImg, setActiveImg] = useState(0);
-  const [colour, setColour] = useState(product?.colour || '');
+  const [colour, setColour] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [tab, setTab] = useState<'description' | 'details' | 'care'>('description');
+
+  useEffect(() => {
+    if (!slug) return;
+
+    (async () => {
+      const foundProduct = await getProductBySlug(slug);
+      setProduct(foundProduct);
+      setColour(foundProduct?.colour || '');
+      setActiveImg(0);
+      setQuantity(1);
+
+      if (foundProduct) {
+        const allProducts = await getProducts();
+        const relatedItems = allProducts
+          .filter((item) => item.category_id === foundProduct.category_id && item.id !== foundProduct.id)
+          .slice(0, 4);
+        setRelatedProducts(relatedItems as Product[]);
+      } else {
+        setRelatedProducts([]);
+      }
+    })();
+  }, [slug]);
 
   if (!product) {
     return (
@@ -28,8 +52,8 @@ export function ProductDetailPage() {
     );
   }
 
-  const wished = isWishlisted(product.id);
-  const related = products.filter((p) => p.category_id === product.category_id && p.id !== product.id).slice(0, 4);
+  const wished = product ? isWishlisted(product.id) : false;
+  const related = relatedProducts;
 
   const handleWhatsApp = () => {
     const msg = `✨ GEMWALE PRODUCT ENQUIRY\n\nProduct: ${product.name}\nProduct Code: ${product.product_code}\nColour: ${colour}\nQuantity: ${quantity}\nPrice: ₹${product.price.toLocaleString('en-IN')}\n\nI'd like to know more about this piece.`;

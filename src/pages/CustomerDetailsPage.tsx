@@ -52,6 +52,10 @@ export function CustomerDetailsPage() {
     try {
       const orderId = generateOrderId();
 
+      if (!supabase) {
+        throw new Error('Checkout is currently unavailable because Supabase is not configured.');
+      }
+
       // 1. Save customer
       const { data: customer, error: custErr } = await supabase
         .from('customers')
@@ -88,13 +92,13 @@ export function CustomerDetailsPage() {
       // 3. Save order items
       const items = cart.map((i) => ({
         order_id: order.id,
-        product_id: i.product_id,
         product_code: i.product_code,
         product_name: i.name,
         colour: i.colour,
         quantity: i.quantity,
         price: i.price,
       }));
+
       const { error: itemsErr } = await supabase.from('order_items').insert(items);
       if (itemsErr) throw new Error('Could not save order items.');
 
@@ -134,13 +138,15 @@ TOTAL: ₹${cartTotal.toLocaleString('en-IN')}
 Please confirm availability and share payment details.`;
 
       // 5. Open WhatsApp
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+      window.location.href = url;
 
       // 6. Clear cart and go to success
       clearCart();
       navigate('/order-success', { state: { orderId } });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } catch (err: any) {
+      console.error('Checkout failed:', err);
+      setError(err?.message || 'Could not place your order. Please try again.');
     } finally {
       setLoading(false);
     }

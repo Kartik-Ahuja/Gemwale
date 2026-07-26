@@ -1,13 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { categories, products } from '@/data/catalog';
+import { categories } from '@/data/catalog';
 import { ProductCard } from '@/components/ProductCard';
 import { PageHero } from '@/components/PageHero';
 import { SectionReveal } from '@/components/Ornaments';
-
-const allColours = Array.from(new Set(products.flatMap((p) => p.colours))).sort();
+import { getProducts } from '@/lib/productStore';
+import type { Product } from '@/types';
 
 type SortKey = 'newest' | 'price-asc' | 'price-desc' | 'bestsellers' | 'trending';
 
@@ -15,15 +15,25 @@ export function CategoryPage() {
   const { slug } = useParams<{ slug: string }>();
   const category = categories.find((c) => c.slug === slug);
 
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
   const [sort, setSort] = useState<SortKey>('newest');
   const [showFilters, setShowFilters] = useState(false);
   const [visible, setVisible] = useState(12);
 
+  useEffect(() => {
+    (async () => {
+      const items = await getProducts();
+      setProducts(items as Product[]);
+    })();
+  }, []);
+
   const baseProducts = useMemo(
     () => (category ? products.filter((p) => p.category_id === category.id) : []),
-    [category],
+    [category, products],
   );
+
+  const allColours = useMemo(() => Array.from(new Set(products.flatMap((p) => p.colours))).sort(), [products]);
 
   const filtered = useMemo(() => {
     let list = [...baseProducts];

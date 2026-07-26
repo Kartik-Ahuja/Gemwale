@@ -1,27 +1,36 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { SlidersHorizontal, X } from 'lucide-react';
-import { products, categories } from '@/data/catalog';
+import { categories } from '@/data/catalog';
 import { ProductCard } from '@/components/ProductCard';
 import { PageHero } from '@/components/PageHero';
 import { SectionReveal } from '@/components/Ornaments';
+import { getProducts } from '@/lib/productStore';
 import type { Product } from '@/types';
 
 type SortKey = 'newest' | 'price-asc' | 'price-desc' | 'bestsellers' | 'trending';
-
-const allColours = Array.from(new Set(products.flatMap((p) => p.colours))).sort();
 
 export function ShopPage() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCats, setSelectedCats] = useState<string[]>(params.get('category') ? [params.get('category')!] : []);
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 6000]);
   const [sort, setSort] = useState<SortKey>('newest');
   const [showFilters, setShowFilters] = useState(false);
   const [visible, setVisible] = useState(12);
+
+  useEffect(() => {
+    (async () => {
+      const items = await getProducts();
+      setProducts(items as Product[]);
+    })();
+  }, []);
+
+  const allColours = useMemo(() => Array.from(new Set(products.flatMap((p) => p.colours))).sort(), [products]);
 
   const filtered = useMemo(() => {
     let list: Product[] = [...products];
@@ -42,7 +51,7 @@ export function ShopPage() {
       default: list.sort((a, b) => Number(b.is_new_arrival) - Number(a.is_new_arrival));
     }
     return list;
-  }, [selectedCats, selectedColours, priceRange, sort]);
+  }, [products, selectedCats, selectedColours, priceRange, sort]);
 
   const toggle = (arr: string[], set: (v: string[]) => void, value: string) =>
     set(arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value]);

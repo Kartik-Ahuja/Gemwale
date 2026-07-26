@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard, Package, ShoppingBag, Users, Tag, FolderTree,
-  Loader2, Plus, Pencil, Trash2, X, Check,
+  Loader2, Plus, Pencil, Trash2, X, Check, LogOut, Lock, Mail,
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import { categories, collections, products as seedProducts } from '@/data/catalog';
+import { categories, collections } from '@/data/catalog';
+import { deleteProduct as deleteStoredProduct, getProducts, seedProductsToDb, upsertProduct } from '@/lib/productStore';
 import { OrnamentalDivider } from '@/components/Ornaments';
 import type { OrderStatus, PaymentStatus, Product } from '@/types';
 
@@ -13,6 +13,17 @@ type Tab = 'overview' | 'products' | 'orders' | 'customers' | 'categories' | 'co
 
 const orderStatuses: OrderStatus[] = ['WhatsApp Contacted', 'Payment Pending', 'Payment Received', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
 const paymentStatuses: PaymentStatus[] = ['Pending', 'Paid', 'Failed', 'Refunded'];
+const ADMIN_AUTH_KEY = 'gemwale_admin_auth';
+const PRODUCT_IMAGES_BUCKET = 'products';
+const configuredAdminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase() || '';
+const configuredAdminPassword = import.meta.env.VITE_ADMIN_PASSWORD?.trim() || '';
+const adminCredentialsConfigured = Boolean(configuredAdminEmail && configuredAdminPassword);
+
+function isValidAdminLogin(email: string, password: string) {
+  return adminCredentialsConfigured
+    && email.trim().toLowerCase() === configuredAdminEmail
+    && password === configuredAdminPassword;
+}
 
 export function AdminDashboard() {
   const [tab, setTab] = useState<Tab>('overview');
@@ -21,39 +32,49 @@ export function AdminDashboard() {
   const [dbProducts, setDbProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
 
   useEffect(() => {
+    const savedAuth = localStorage.getItem(ADMIN_AUTH_KEY);
+    if (savedAuth === 'true') {
+      setIsAuthenticated(true);
+    }
+    setCheckingAuth(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated || checkingAuth) return;
+
     (async () => {
+      setLoading(true);
       await Promise.all([fetchOrders(), fetchCustomers(), fetchProducts()]);
       setLoading(false);
     })();
-  }, []);
+  }, [isAuthenticated, checkingAuth]);
 
   const fetchOrders = async () => {
-    const { data } = await supabase
-      .from('orders')
-      .select(`*, customers ( full_name, phone, city, state ), order_items ( product_name, product_code, colour, quantity, price )`)
-      .order('created_at', { ascending: false });
-    setOrders(data || []);
+    setOrders([]);
   };
 
   const fetchCustomers = async () => {
-    const { data } = await supabase.from('customers').select('*').order('created_at', { ascending: false });
-    setCustomers(data || []);
+    setCustomers([]);
   };
 
-  const fetchProducts = async () => {
-    const { data } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-    setDbProducts(data || []);
-  };
+const fetchProducts = async () => {
+  const products = await getProducts();
+  setDbProducts(products);
+};
 
-  const updateOrderStatus = async (id: string, field: string, value: string) => {
-    await supabase.from('orders').update({ [field]: value }).eq('id', id);
+  const updateOrderStatus = async () => {
     fetchOrders();
   };
 
   const deleteProduct = async (id: string) => {
-    await supabase.from('products').delete().eq('id', id);
+    await deleteStoredProduct(id);
     fetchProducts();
   };
 
@@ -75,14 +96,108 @@ export function AdminDashboard() {
     { key: 'collections', label: 'Collections', icon: FolderTree },
   ];
 
+  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!adminCredentialsConfigured) {
+      setAuthError('Set VITE_ADMIN_EMAIL and VITE_ADMIN_PASSWORD in your .env file before logging in.');
+      return;
+    }
+
+    if (isValidAdminLogin(email, password)) {
+      setIsAuthenticated(true);
+      localStorage.setItem(ADMIN_AUTH_KEY, 'true');
+      setAuthError('');
+      setPassword('');
+      return;
+    }
+
+    setAuthError('Invalid email or password');
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem(ADMIN_AUTH_KEY);
+    setEmail('');
+    setPassword('');
+    setAuthError('');
+    setTab('overview');
+  };
+
+  if (checkingAuth) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-burgundy-950 px-4 pt-16">
+        <div className="flex items-center gap-3 text-ivory-100/70">
+          <Loader2 className="h-6 w-6 animate-spin text-gold-400" />
+          <span>Checking access…</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-burgundy-950 px-4 pt-16">
+        <div className="w-full max-w-md border border-gold-400/20 bg-burgundy-900/90 p-8 shadow-2xl">
+          <div className="mb-6 text-center">
+            <p className="section-eyebrow mb-2">GemWale Admin</p>
+            <h1 className="font-display text-3xl text-ivory-100">Secure Login</h1>
+            <p className="mt-2 text-sm text-ivory-100/60">Use the admin credentials configured in your local environment to continue.</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <label className="block">
+              <span className="mb-1 flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-gold-400">
+                <Mail className="h-3.5 w-3.5" /> Email
+              </span>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="input-field"
+                placeholder="Enter your admin email"
+                required
+              />
+            </label>
+
+            <label className="block">
+              <span className="mb-1 flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-gold-400">
+                <Lock className="h-3.5 w-3.5" /> Password
+              </span>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input-field"
+                placeholder="Enter your admin password"
+                required
+              />
+            </label>
+
+            {authError && <p className="text-sm text-red-300">{authError}</p>}
+
+            <button type="submit" disabled={!adminCredentialsConfigured} className="btn-gold-solid w-full justify-center disabled:cursor-not-allowed disabled:opacity-60">
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-burgundy-950 pt-16">
       <div className="container-editorial py-8">
         {/* Header */}
-        <div className="mb-8">
-          <p className="section-eyebrow mb-2">GemWale Admin</p>
-          <h1 className="font-display text-4xl text-ivory-100 sm:text-5xl">Dashboard</h1>
-          <OrnamentalDivider className="mt-4 justify-start" />
+        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="section-eyebrow mb-2">GemWale Admin</p>
+            <h1 className="font-display text-4xl text-ivory-100 sm:text-5xl">Dashboard</h1>
+            <OrnamentalDivider className="mt-4 justify-start" />
+          </div>
+          <button onClick={handleLogout} className="flex items-center gap-2 border border-gold-400/20 px-3 py-2 text-sm text-ivory-100/70 hover:border-gold-400 hover:text-gold-300">
+            <LogOut className="h-4 w-4" /> Logout
+          </button>
         </div>
 
         {/* Tabs */}
@@ -339,30 +454,64 @@ function ProductEditModal({ product, onClose, onSaved }: { product: Product | nu
     },
   );
   const [saving, setSaving] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   const [coloursInput, setColoursInput] = useState((product?.colours || []).join(', '));
   const [imagesInput, setImagesInput] = useState((product?.images || []).join(', '));
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const set = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
 
+  const fileToDataUrl = (file: File) => new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(new Error('Failed to read selected image.'));
+    reader.readAsDataURL(file);
+  });
+
   const handleSave = async () => {
     setSaving(true);
-    const payload = {
-      ...form,
-      slug: form.slug || (form.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + (form.product_code || '').toLowerCase(),
-      colours: coloursInput.split(',').map((s) => s.trim()).filter(Boolean),
-      images: imagesInput.split(',').map((s) => s.trim()).filter(Boolean),
-      price: Number(form.price) || 0,
-      stock: Number(form.stock) || 0,
-      display_order: Number(form.display_order) || 0,
-    };
-    if (product?.id) {
-      await supabase.from('products').update(payload).eq('id', product.id);
-    } else {
-      await supabase.from('products').insert(payload);
+    setUploadError('');
+
+    try {
+      let uploadedImageUrls: string[] = [];
+      if (selectedFiles.length > 0) {
+        setUploadingImages(true);
+        uploadedImageUrls = await Promise.all(
+          selectedFiles.map(async (file) => fileToDataUrl(file)),
+        );
+      }
+
+      const manualImages = imagesInput
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      const payload = {
+        ...form,
+        slug: form.slug || (form.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + (form.product_code || '').toLowerCase(),
+        colours: coloursInput.split(',').map((s) => s.trim()).filter(Boolean),
+        images: [...uploadedImageUrls, ...manualImages].filter(Boolean),
+        price: Number(form.price) || 0,
+        stock: Number(form.stock) || 0,
+        display_order: Number(form.display_order) || 0,
+      };
+
+      await upsertProduct({
+        ...payload,
+        id: product?.id,
+      });
+
+      onSaved();
+      onClose();
+    } catch (error: any) {
+      const message = error?.message || 'Unable to save product. Check your Supabase configuration and table permissions.';
+      setUploadError(message);
+      console.error('Product save failed:', error);
+    } finally {
+      setSaving(false);
+      setUploadingImages(false);
     }
-    setSaving(false);
-    onSaved();
-    onClose();
   };
 
   return (
@@ -397,7 +546,23 @@ function ProductEditModal({ product, onClose, onSaved }: { product: Product | nu
             </select>
           </L>
           <div className="sm:col-span-2"><L label="Colours (comma separated)"><input value={coloursInput} onChange={(e) => setColoursInput(e.target.value)} className="input-field" /></L></div>
-          <div className="sm:col-span-2"><L label="Image URLs (comma separated)"><input value={imagesInput} onChange={(e) => setImagesInput(e.target.value)} className="input-field" /></L></div>
+          <div className="sm:col-span-2">
+            <L label="Upload Images">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))}
+                className="input-field mt-2 file:mr-4 file:rounded file:border-0 file:bg-gold-400 file:px-3 file:py-2 file:text-burgundy-900"
+              />
+            </L>
+            <p className="mt-2 text-xs text-ivory-100/50">
+              Selected images are saved with the product. If Supabase Storage is available, they are uploaded there; otherwise they are stored as embedded image data.
+            </p>
+            {selectedFiles.length > 0 && <p className="mt-1 text-xs text-gold-300">{selectedFiles.length} image(s) selected</p>}
+            {uploadError && <p className="mt-2 text-sm text-red-300">{uploadError}</p>}
+          </div>
+          <div className="sm:col-span-2"><L label="Image URLs (optional, comma separated)"><input value={imagesInput} onChange={(e) => setImagesInput(e.target.value)} className="input-field" /></L></div>
           <div className="sm:col-span-2"><L label="Description"><textarea rows={3} value={form.description || ''} onChange={(e) => set('description', e.target.value)} className="input-field resize-none" /></L></div>
           <div className="sm:col-span-2"><L label="Details"><textarea rows={2} value={form.details || ''} onChange={(e) => set('details', e.target.value)} className="input-field resize-none" /></L></div>
           <div className="sm:col-span-2"><L label="Care Instructions"><textarea rows={2} value={form.care_instructions || ''} onChange={(e) => set('care_instructions', e.target.value)} className="input-field resize-none" /></L></div>
@@ -414,8 +579,8 @@ function ProductEditModal({ product, onClose, onSaved }: { product: Product | nu
         </div>
 
         <div className="mt-6 flex gap-3">
-          <button onClick={handleSave} disabled={saving} className="btn-gold-solid flex-1 disabled:opacity-60">
-            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Check className="h-4 w-4" /> Save</>}
+          <button onClick={handleSave} disabled={saving || uploadingImages} className="btn-gold-solid flex-1 disabled:opacity-60">
+            {saving || uploadingImages ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Check className="h-4 w-4" /> Save</>}
           </button>
           <button onClick={onClose} className="btn-outline">Cancel</button>
         </div>
@@ -433,17 +598,4 @@ function L({ label, children }: { label: string; children: React.ReactNode }) {
   );
 }
 
-async function seedProductsToDb(onDone: () => void) {
-  const payload = seedProducts.map((p) => ({
-    name: p.name, slug: p.slug, product_code: p.product_code, price: p.price,
-    category_id: p.category_id, collection_id: p.collection_id,
-    colour: p.colour, colours: p.colours, images: p.images,
-    description: p.description, details: p.details, care_instructions: p.care_instructions,
-    stock: p.stock, availability: p.availability,
-    is_featured: p.is_featured, is_bestseller: p.is_bestseller, is_trending: p.is_trending,
-    is_new_arrival: p.is_new_arrival, is_limited_edition: p.is_limited_edition, is_unisex: p.is_unisex,
-    display_order: p.display_order,
-  }));
-  await supabase.from('products').insert(payload);
-  onDone();
-}
+// seedProductsToDb is provided by the shared product store

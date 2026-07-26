@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ChevronDown, Star } from 'lucide-react';
-import { products, categories, collections } from '@/data/catalog';
+import { categories, collections } from '@/data/catalog';
 import { ProductCarousel } from '@/components/ProductCarousel';
 import { ProductCard } from '@/components/ProductCard';
 import { FloatingMotif, JharokhaArch, JaaliPattern, OrnamentalDivider, PeacockCurve, SectionReveal } from '@/components/Ornaments';
+import { getProducts } from '@/lib/productStore';
+import type { Product } from '@/types';
 
 const lifestyleScenes = [
   { label: 'Café', img: 'https://images.pexels.com/photos/1855214/pexels-photo-1855214.jpeg?auto=compress&cs=tinysrgb&w=800' },
@@ -40,6 +42,14 @@ export function HomePage() {
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const items = await getProducts();
+      setProducts(items as Product[]);
+    })();
+  }, []);
 
   const newArrivals = products.filter((p) => p.is_new_arrival);
   const bestSellers = products.filter((p) => p.is_bestseller);
@@ -475,7 +485,7 @@ function SectionBlock({
   eyebrow: string;
   bilingual: string;
   subtitle: string;
-  products: typeof products;
+  products: Product[];
   cta: string;
   ctaLink: string;
   carousel?: boolean;

@@ -1,13 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { collections, products } from '@/data/catalog';
+import { collections } from '@/data/catalog';
 import { ProductCard } from '@/components/ProductCard';
 import { PageHero } from '@/components/PageHero';
 import { SectionReveal, OrnamentalDivider } from '@/components/Ornaments';
-import type { CollectionSlug } from '@/types';
+import { getProducts } from '@/lib/productStore';
+import type { CollectionSlug, Product } from '@/types';
 
-const filterMap: Record<string, (p: typeof products[number]) => boolean> = {
+const filterMap: Record<string, (p: Product) => boolean> = {
   'new-arrivals': (p) => p.is_new_arrival,
   'best-sellers': (p) => p.is_bestseller,
   'trending': (p) => p.is_trending,
@@ -23,13 +24,21 @@ const filterMap: Record<string, (p: typeof products[number]) => boolean> = {
 export function CollectionPage() {
   const { slug } = useParams<{ slug: string }>();
   const collection = collections.find((c) => c.slug === slug);
+  const [products, setProducts] = useState<Product[]>([]);
   const [visible, setVisible] = useState(12);
+
+  useEffect(() => {
+    (async () => {
+      const items = await getProducts();
+      setProducts(items as Product[]);
+    })();
+  }, []);
 
   const items = useMemo(() => {
     if (!collection) return [];
     const fn = filterMap[collection.slug as CollectionSlug];
     return fn ? products.filter(fn) : [];
-  }, [collection]);
+  }, [collection, products]);
 
   if (!collection) {
     return (

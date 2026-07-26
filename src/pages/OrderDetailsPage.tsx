@@ -31,6 +31,11 @@ export function OrderDetailsPage() {
     setError(null);
     setOrder(null);
     try {
+      if (!supabase) {
+        setError('Order lookup is unavailable because Supabase is not configured.');
+        return;
+      }
+
       const { data, error } = await supabase
         .from('orders')
         .select(`
