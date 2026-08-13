@@ -18,12 +18,12 @@ export function PageHero({
     <section className="relative overflow-hidden border-b border-gold-400/15 bg-burgundy-950">
       {image && (
         <div className="absolute inset-0">
-          <img src={image} alt="" className="h-full w-full object-cover opacity-25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-burgundy-900/70 via-burgundy-900/80 to-burgundy-950" />
+          <img src={image} alt="" className="h-full w-full object-cover object-[center_-15%] opacity-55" />
+          <div className="absolute inset-0 bg-gradient-to-b from-burgundy-900/40 via-burgundy-900/60 to-burgundy-950" />
         </div>
       )}
       <div className="bg-jaali absolute inset-0 opacity-40" />
-      <div className="container-editorial relative py-20 text-center sm:py-28">
+      <div className="container-editorial relative py-20 text-center sm:py-48">
         {eyebrow && (
           <motion.p
             initial={{ opacity: 0, y: 12 }}

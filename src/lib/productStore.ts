@@ -1,4 +1,5 @@
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { db, isFirebaseConfigured } from '@/lib/firebase';
+import { collection, deleteDoc, doc, getDocs, orderBy, query, setDoc } from 'firebase/firestore';
 import { products as seedProducts } from '@/data/catalog';
 import type { Product } from '@/types';
 
@@ -68,19 +69,24 @@ const getFallbackProducts = (): Product[] => {
 export async function getProducts(): Promise<Product[]> {
   const fallbackProducts = getFallbackProducts();
 
-  if (!isSupabaseConfigured || !supabase) {
+  if (!isFirebaseConfigured || !db) {
     return fallbackProducts;
   }
 
   try {
-    const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-    if (!error && Array.isArray(data)) {
-      const normalized = (data as Partial<Product>[]).map((item) => normalizeProduct(item));
-      writeStoredProducts(normalized);
-      return normalized;
+    const snapshot = await getDocs(collection(db, 'products'));
+    if (snapshot.empty) {
+      console.warn('Firebase getProducts: products collection is empty.');
+      return fallbackProducts;
     }
-  } catch {
-    // fall through to local fallback
+
+    const normalized = snapshot.docs
+      .map((item) => normalizeProduct({ ...item.data(), id: item.id }))
+      .sort((a, b) => (new Date(b.created_at).getTime() || 0) - (new Date(a.created_at).getTime() || 0));
+    writeStoredProducts(normalized);
+    return normalized;
+  } catch (error) {
+    console.error('Firebase getProducts failed:', error);
   }
 
   return fallbackProducts;
@@ -100,19 +106,14 @@ export async function upsertProduct(input: Partial<Product> & Record<string, any
 
   writeStoredProducts(nextProducts);
 
-  if (isSupabaseConfigured && supabase) {
+  if (isFirebaseConfigured && db) {
     try {
       const payload = {
         ...nextProduct,
-        id: undefined,
       };
-
-      if (input.id) {
-        await supabase.from('products').update(payload).eq('id', input.id);
-      } else {
-        await supabase.from('products').insert(payload);
-      }
-    } catch {
+      await setDoc(doc(db, 'products', nextProduct.id), payload, { merge: true });
+    } catch (error) {
+      console.error('Firebase upsertProduct failed:', error);
       // local storage fallback remains intact
     }
   }
@@ -124,9 +125,9 @@ export async function deleteProduct(id: string): Promise<void> {
   const nextProducts = readStoredProducts().filter((product) => product.id !== id);
   writeStoredProducts(nextProducts);
 
-  if (isSupabaseConfigured && supabase) {
+  if (isFirebaseConfigured && db) {
     try {
-      await supabase.from('products').delete().eq('id', id);
+      await deleteDoc(doc(db, 'products', id));
     } catch {
       // ignore and keep local storage state
     }
@@ -137,9 +138,12 @@ export async function seedProductsToDb(onDone?: () => void): Promise<void> {
   const seedPayload = seedProducts.map((product) => normalizeProduct(product));
   writeStoredProducts(seedPayload);
 
-  if (isSupabaseConfigured && supabase) {
+  if (isFirebaseConfigured && db) {
     try {
-      await supabase.from('products').insert(seedPayload.map((product) => ({ ...product, id: undefined })));
+      const firestoreDb = db;
+      await Promise.all(
+        seedPayload.map((product) => setDoc(doc(firestoreDb, 'products', product.id), product)),
+      );
     } catch {
       // local storage fallback remains intact
     }

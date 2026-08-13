@@ -11,7 +11,7 @@ export function AboutPage() {
         title="About GemWale"
         bilingual="गेमवाले के बारे में"
         description="Premium gemstone jewellery with an Indian Rajasthani soul — made for every age, every style, every occasion."
-        image="https://images.pexels.com/photos/1454113009175-9a4b1c3de9a4/pexels-photo-1454113009175-9a4b1c3de9a4.jpeg?auto=compress&cs=tinysrgb&w=1600"
+        // image="https://images.pexels.com/photos/1454113009175-9a4b1c3de9a4/pexels-photo-1454113009175-9a4b1c3de9a4.jpeg?auto=compress&cs=tinysrgb&w=1600"
       />
 
       {/* Brand idea */}

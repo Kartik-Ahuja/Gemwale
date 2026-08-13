@@ -21,22 +21,33 @@ const StoreContext = createContext<StoreContextValue | null>(null);
 const CART_KEY = 'gemwale_cart';
 const WISH_KEY = 'gemwale_wishlist';
 
-function loadCart(): CartItem[] {
+function safeLoad<T>(key: string, fallback: T): T {
   try {
-    const raw = localStorage.getItem(CART_KEY);
-    return raw ? (JSON.parse(raw) as CartItem[]) : [];
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : fallback;
   } catch {
-    return [];
+    return fallback;
   }
 }
 
-function loadWishlist(): string[] {
+function safeSave(key: string, value: unknown) {
   try {
-    const raw = localStorage.getItem(WISH_KEY);
-    return raw ? (JSON.parse(raw) as string[]) : [];
-  } catch {
-    return [];
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+      console.warn(`localStorage quota exceeded for ${key}. Skipping save.`);
+      return;
+    }
+    console.warn(`Failed to save ${key} to localStorage.`, error);
   }
+}
+
+function loadCart(): CartItem[] {
+  return safeLoad<CartItem[]>(CART_KEY, []);
+}
+
+function loadWishlist(): string[] {
+  return safeLoad<string[]>(WISH_KEY, []);
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
@@ -45,11 +56,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [cartOpen, setCartOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    safeSave(CART_KEY, cart);
   }, [cart]);
 
   useEffect(() => {
-    localStorage.setItem(WISH_KEY, JSON.stringify(wishlist));
+    safeSave(WISH_KEY, wishlist);
   }, [wishlist]);
 
   const addToCart: StoreContextValue['addToCart'] = (product, colour, quantity = 1) => {

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { motion } from 'framer-motion';
+import NecklaceCover from '../images/demo.jpg';
 import { categories } from '@/data/catalog';
 import { ProductCard } from '@/components/ProductCard';
 import { PageHero } from '@/components/PageHero';
@@ -14,6 +15,7 @@ type SortKey = 'newest' | 'price-asc' | 'price-desc' | 'bestsellers' | 'trending
 export function CategoryPage() {
   const { slug } = useParams<{ slug: string }>();
   const category = categories.find((c) => c.slug === slug);
+  const categoryCoverImage = NecklaceCover;
 
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedColours, setSelectedColours] = useState<string[]>([]);

@@ -18,7 +18,8 @@ export function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCats, setSelectedCats] = useState<string[]>(params.get('category') ? [params.get('category')!] : []);
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 6000]);
+  // FIX 1: Increased max price range from 6,000 to 1,00,000
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]); 
   const [sort, setSort] = useState<SortKey>('newest');
   const [showFilters, setShowFilters] = useState(false);
   const [visible, setVisible] = useState(12);
@@ -30,22 +31,30 @@ export function ShopPage() {
     })();
   }, []);
 
-  const allColours = useMemo(() => Array.from(new Set(products.flatMap((p) => p.colours))).sort(), [products]);
+  // FIX 2: Added `|| []` fallback to prevent crashes if a product has no colors assigned
+  const allColours = useMemo(() => 
+    Array.from(new Set(products.flatMap((p) => p.colours || []))).sort(), 
+  [products]);
 
   const filtered = useMemo(() => {
     let list: Product[] = [...products];
+    
     if (selectedCats.length) {
       const catIds = categories.filter((c) => selectedCats.includes(c.slug)).map((c) => c.id);
       list = list.filter((p) => p.category_id && catIds.includes(p.category_id));
     }
+    
     if (selectedColours.length) {
-      list = list.filter((p) => p.colours.some((c) => selectedColours.includes(c)));
+      // FIX 2 continued: Added `|| []` fallback here as well
+      list = list.filter((p) => (p.colours || []).some((c) => selectedColours.includes(c)));
     }
-    list = list.filter((p) => p.price >= priceRange[0] && p.price <= priceRange[1]);
+    
+    // FIX 3: Wrapped p.price in Number() to ensure math works even if DB returns strings
+    list = list.filter((p) => Number(p.price) >= priceRange[0] && Number(p.price) <= priceRange[1]);
 
     switch (sort) {
-      case 'price-asc': list.sort((a, b) => a.price - b.price); break;
-      case 'price-desc': list.sort((a, b) => b.price - a.price); break;
+      case 'price-asc': list.sort((a, b) => Number(a.price) - Number(b.price)); break;
+      case 'price-desc': list.sort((a, b) => Number(b.price) - Number(a.price)); break;
       case 'bestsellers': list.sort((a, b) => Number(b.is_bestseller) - Number(a.is_bestseller)); break;
       case 'trending': list.sort((a, b) => Number(b.is_trending) - Number(a.is_trending)); break;
       default: list.sort((a, b) => Number(b.is_new_arrival) - Number(a.is_new_arrival));
@@ -103,7 +112,7 @@ export function ShopPage() {
         <input
           type="range"
           min={0}
-          max={6000}
+          max={100000} // FIX 1 continued: Updated slider max to match state
           step={100}
           value={priceRange[1]}
           onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
@@ -161,7 +170,7 @@ export function ShopPage() {
                 <div className="py-20 text-center">
                   <p className="font-serif text-xl text-ivory-100/70">No pieces match your filters.</p>
                   <button
-                    onClick={() => { setSelectedCats([]); setSelectedColours([]); setPriceRange([0, 6000]); }}
+                    onClick={() => { setSelectedCats([]); setSelectedColours([]); setPriceRange([0, 100000]); }}
                     className="btn-gold mt-4"
                   >
                     Clear Filters

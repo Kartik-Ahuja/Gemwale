@@ -13,16 +13,16 @@ const navLinks = [
 ];
 
 const collectionLinks = [
-  { label: 'New Arrivals', to: '/collections/new-arrivals' },
+  // { label: 'New Arrivals', to: '/collections/new-arrivals' },
   { label: 'Best Sellers', to: '/collections/best-sellers' },
-  { label: 'Trending Now', to: '/collections/trending' },
-  { label: 'Featured Edit', to: '/collections/featured-edit' },
+  // { label: 'Trending Now', to: '/collections/trending' },
+  // { label: 'Featured Edit', to: '/collections/featured-edit' },
   { label: 'Latest Drops', to: '/collections/latest-drops' },
   { label: 'Fresh Styles', to: '/collections/fresh-styles' },
-  { label: 'Signature Pieces', to: '/collections/signature-pieces' },
+  // { label: 'Signature Pieces', to: '/collections/signature-pieces' },
   { label: 'Limited Edition', to: '/collections/limited-edition' },
   { label: 'Top Picks', to: '/collections/top-picks' },
-  { label: 'Unisex Collection', to: '/collections/unisex' },
+  // { label: 'Unisex Collection', to: '/collections/unisex' },
 ];
 
 const categoryLinks = [
@@ -68,8 +68,15 @@ export function Header() {
       >
         <div className="container-editorial flex h-16 items-center justify-between lg:h-20">
           {/* Left: logo */}
-          <Link to="/" className="font-display text-2xl tracking-wide text-ivory-100 lg:text-3xl">
-            Gem<span className="gold-text-gradient">Wale</span>
+          <Link to="/" className="flex items-center gap-2 text-ivory-100" aria-label="Home">
+            <img
+              src="/src/images/Gemwale.png"
+              alt="GemWale"
+              className="mt-[10px] h-20 w-20 sm:h-24 sm:w-24 lg:h-60 lg:w-60"
+            />
+            {/* <span className="font-display text-2xl tracking-wide text-ivory-100 lg:text-3xl">
+              Gem<span className="gold-text-gradient">Wale</span>
+            </span> */}
           </Link>
 
           {/* Center: nav */}

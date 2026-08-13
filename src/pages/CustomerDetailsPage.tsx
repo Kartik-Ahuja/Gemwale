@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
-import { supabase, WHATSAPP_NUMBER } from '@/lib/supabase';
+import { collection, doc, setDoc } from 'firebase/firestore';
+import { db, WHATSAPP_NUMBER } from '@/lib/firebase';
 import { PageHero } from '@/components/PageHero';
 import { OrnamentalDivider } from '@/components/Ornaments';
 import type { Customer } from '@/types';
@@ -52,14 +53,26 @@ export function CustomerDetailsPage() {
     try {
       const orderId = generateOrderId();
 
-      if (!supabase) {
-        throw new Error('Checkout is currently unavailable because Supabase is not configured.');
+      if (!db) {
+        throw new Error('Checkout is currently unavailable because Firebase is not configured.');
       }
 
-      // 1. Save customer
-      const { data: customer, error: custErr } = await supabase
-        .from('customers')
-        .insert({
+      const items = cart.map((i) => ({
+        order_id: orderId,
+        product_code: i.product_code,
+        product_name: i.name,
+        colour: i.colour,
+        quantity: i.quantity,
+        price: i.price,
+      }));
+
+      const orderRef = doc(collection(db, 'orders'));
+      await setDoc(orderRef, {
+        order_id: orderId,
+        total: cartTotal,
+        order_status: 'WhatsApp Contacted',
+        payment_status: 'Pending',
+        customers: {
           full_name: form.full_name,
           phone: form.phone,
           email: form.email || null,
@@ -68,39 +81,10 @@ export function CustomerDetailsPage() {
           state: form.state,
           pin_code: form.pin_code,
           country: form.country,
-        })
-        .select()
-        .single();
-
-      if (custErr || !customer) throw new Error('Could not save customer details.');
-
-      // 2. Save order
-      const { data: order, error: orderErr } = await supabase
-        .from('orders')
-        .insert({
-          order_id: orderId,
-          customer_id: customer.id,
-          total: cartTotal,
-          order_status: 'WhatsApp Contacted',
-          payment_status: 'Pending',
-        })
-        .select()
-        .single();
-
-      if (orderErr || !order) throw new Error('Could not save order.');
-
-      // 3. Save order items
-      const items = cart.map((i) => ({
-        order_id: order.id,
-        product_code: i.product_code,
-        product_name: i.name,
-        colour: i.colour,
-        quantity: i.quantity,
-        price: i.price,
-      }));
-
-      const { error: itemsErr } = await supabase.from('order_items').insert(items);
-      if (itemsErr) throw new Error('Could not save order items.');
+        },
+        order_items: items,
+        created_at: new Date().toISOString(),
+      });
 
       // 4. Build WhatsApp message
       const itemLines = cart

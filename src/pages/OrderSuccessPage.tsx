@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Check, MessageCircle } from 'lucide-react';
-import { WHATSAPP_NUMBER } from '@/lib/supabase';
+import { WHATSAPP_NUMBER } from '@/lib/firebase';
 import { OrnamentalDivider } from '@/components/Ornaments';
 
 export function OrderSuccessPage() {

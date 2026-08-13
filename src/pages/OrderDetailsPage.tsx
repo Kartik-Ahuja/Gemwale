@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Loader2, Package, Search } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { collection, getDocs, limit, query as firestoreQuery, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import { PageHero } from '@/components/PageHero';
 import { OrnamentalDivider } from '@/components/Ornaments';
 
@@ -31,26 +32,21 @@ export function OrderDetailsPage() {
     setError(null);
     setOrder(null);
     try {
-      if (!supabase) {
-        setError('Order lookup is unavailable because Supabase is not configured.');
+      if (!db) {
+        setError('Order lookup is unavailable because Firebase is not configured.');
         return;
       }
 
-      const { data, error } = await supabase
-        .from('orders')
-        .select(`
-          order_id, total, order_status, payment_status, created_at,
-          customers ( full_name, phone, address, city, state, pin_code, country ),
-          order_items ( product_name, product_code, colour, quantity, price )
-        `)
-        .eq('order_id', id.trim())
-        .maybeSingle();
-
-      if (error) throw error;
-      if (!data) {
+      const ordersQuery = firestoreQuery(
+        collection(db, 'orders'),
+        where('order_id', '==', id.trim()),
+        limit(1),
+      );
+      const snapshot = await getDocs(ordersQuery);
+      if (snapshot.empty) {
         setError('No order found with that ID. Please check and try again.');
       } else {
-        setOrder(data as unknown as OrderRow);
+        setOrder(snapshot.docs[0].data() as unknown as OrderRow);
       }
     } catch {
       setError('Could not look up the order. Please try again.');

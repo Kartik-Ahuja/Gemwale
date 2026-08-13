@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { PageHero } from '@/components/PageHero';
 import { SectionReveal, OrnamentalDivider, FloatingMotif, JharokhaArch, PeacockCurve, JaaliPattern } from '@/components/Ornaments';
+import OurStoryHero from '../images/OurStory/OurStoryHero.png';
+import OurStory2 from '../images/OurStory/OurStory2.png';
 
 export function OurStoryPage() {
   return (
@@ -10,8 +12,8 @@ export function OurStoryPage() {
         eyebrow="Rooted in Rajasthan"
         title="Our Story"
         bilingual="हमारी कहानी"
-        description="From the jharokhas of Jaipur to jewellery that matches your vibe — everywhere."
-        image="https://images.pexels.com/photos/1458946/pexels-photo-1458946.jpeg?auto=compress&cs=tinysrgb&w=1600"
+        description="A reflection of your mood, a part of your style."
+        image={OurStoryHero}
       />
 
       {/* Narrative */}
@@ -20,24 +22,24 @@ export function OurStoryPage() {
           <SectionReveal>
             <p className="section-eyebrow mb-4">Chapter One</p>
             <h2 className="font-display text-3xl leading-tight text-ivory-100 sm:text-4xl">
-              It Started With a Jharokha
+              It Started With a Stone
             </h2>
             <OrnamentalDivider className="mt-5 justify-start" />
             <div className="mt-6 space-y-5 text-base leading-relaxed text-ivory-100/70">
               <p>
-                In the narrow lanes of Jaipur, where every jharokha tells a story and every jaali
-                filters light into poetry, an idea took root. Jewellery here isn't just adornment —
-                it's a language. A way of saying who you are without saying a word.
+               It started with a simple thought — jewellery shouldn't have to wait for an occasion.
+We wanted to create pieces that feel effortless, expressive, and easy to make your own. Jewellery you could wear with your everyday look, style for a night out, or pair with something special.
               </p>
               <p>
-                But too often, that language was locked behind tradition. Jewellery was reserved for
-                weddings, for festivals, for special occasions. It sat in lockers, waiting. We
-                wondered: what if it didn't have to wait?
+                Not too precious to wear.<br/> 
+Not too ordinary to notice.<br/><br/> Just pieces that add something to you.
+
+That thought became GemWale — a gemstone jewellery brand built around everyday expression, personal style, and the freedom to wear what feels right.
+
+Because there doesn't always need to be a reason.
               </p>
-              <p>
-                What if a single piece could move from a café to a celebration? What if it could
-                match a saree at a family function and a dress at a party? What if it was for the
-                college student and her mother — and everyone in between?
+              <p className="font-extrabold">
+                For plans, no plans & everything in between.
               </p>
             </div>
           </SectionReveal>
@@ -46,7 +48,7 @@ export function OurStoryPage() {
 
       {/* Visual break */}
       <section className="relative h-[50vh] min-h-[400px] overflow-hidden border-b border-gold-400/10">
-        <img src="https://images.pexels.com/photos/1462970/pexels-photo-1462970.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Rajasthan" className="h-full w-full object-cover" />
+        <img src={OurStory2} alt="Rajasthan" className="h-full w-full object-cover opacity-45" />
         <div className="absolute inset-0 bg-gradient-to-t from-burgundy-950 via-burgundy-950/40 to-burgundy-950/30" />
         <div className="absolute inset-0 flex items-center justify-center">
           <SectionReveal className="text-center">
@@ -77,18 +79,18 @@ export function OurStoryPage() {
             <OrnamentalDivider className="mt-5 justify-start" />
             <div className="mt-6 space-y-5 text-base leading-relaxed text-ivory-100/70">
               <p>
-                So we built GemWale — premium gemstone jewellery that carries a whisper of Rajasthani
-                craft, reimagined for a contemporary world. Subtle jharokha arches. Fine jaali
-                patterns. Abstract peacock curves. Never overwhelming. Always elegant.
+                So we built GemWale — premium gemstone jewellery with subtle influences from Rajasthani craft, reimagined for a contemporary world.
+
+Subtle arches. Fine patterns. Abstract peacock-inspired curves.
+Never overwhelming. Always effortless.
               </p>
               <p>
-                We chose gemstones, resin, and glass — set in anti-tarnish, hypoallergenic finishes —
-                so every piece stays beautiful wear after wear. And we made bracelets and keychains
-                unisex, because style doesn't have a gender.
+              We work with gemstones, resin, and glass, paired with anti-tarnish, skin-friendly finishes, creating pieces made to stay beautiful, wear after wear.
+
+And we made our bracelets and keychains unisex — because style has no rules.
               </p>
               <p className="font-serif text-xl italic text-gold-300">
-                No age limit. No style limit. No occasion limit. Just jewellery that matches your vibe.
-              </p>
+No age limit. No style limit. No occasion limit. Just jewellery that matches your vibe.              </p>
             </div>
           </SectionReveal>
         </div>

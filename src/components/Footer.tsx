@@ -73,11 +73,11 @@ export function Footer() {
         <div>
           <h4 className="mb-4 text-[10px] uppercase tracking-[0.3em] text-gold-400">Collections</h4>
           <ul className="space-y-2.5">
-            <li><Link to="/collections/new-arrivals" className="text-sm text-ivory-100/70 hover:text-gold-300">New Arrivals</Link></li>
+            {/* <li><Link to="/collections/new-arrivals" className="text-sm text-ivory-100/70 hover:text-gold-300">New Arrivals</Link></li> */}
             <li><Link to="/collections/best-sellers" className="text-sm text-ivory-100/70 hover:text-gold-300">Best Sellers</Link></li>
             <li><Link to="/collections/trending" className="text-sm text-ivory-100/70 hover:text-gold-300">Trending Now</Link></li>
             <li><Link to="/collections/limited-edition" className="text-sm text-ivory-100/70 hover:text-gold-300">Limited Edition</Link></li>
-            <li><Link to="/collections/unisex" className="text-sm text-ivory-100/70 hover:text-gold-300">Unisex Collection</Link></li>
+            {/* <li><Link to="/collections/unisex" className="text-sm text-ivory-100/70 hover:text-gold-300">Unisex Collection</Link></li> */}
           </ul>
         </div>
 

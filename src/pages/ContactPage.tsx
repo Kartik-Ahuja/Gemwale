@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Mail, MapPin, Phone, Send, Loader2 } from 'lucide-react';
 import { PageHero } from '@/components/PageHero';
 import { SectionReveal, OrnamentalDivider } from '@/components/Ornaments';
-import { WHATSAPP_NUMBER } from '@/lib/supabase';
+import { WHATSAPP_NUMBER } from '@/lib/firebase';
 
 export function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });

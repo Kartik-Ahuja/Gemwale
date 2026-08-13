@@ -505,7 +505,7 @@ function ProductEditModal({ product, onClose, onSaved }: { product: Product | nu
       onSaved();
       onClose();
     } catch (error: any) {
-      const message = error?.message || 'Unable to save product. Check your Supabase configuration and table permissions.';
+      const message = error?.message || 'Unable to save product. Check your Firebase configuration and database permissions.';
       setUploadError(message);
       console.error('Product save failed:', error);
     } finally {

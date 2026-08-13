@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Check, Heart, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
-import { WHATSAPP_NUMBER } from '@/lib/supabase';
+import { WHATSAPP_NUMBER } from '@/lib/firebase';
 import { getProductBySlug, getProducts } from '@/lib/productStore';
 import { ProductCard } from '@/components/ProductCard';
 import { SectionReveal, OrnamentalDivider } from '@/components/Ornaments';
