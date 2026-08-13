@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Heart, Menu, Search, ShoppingBag, X } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
+import gemwaleLogo from "../images/Gemwale.png";
 
 const navLinks = [
   { label: 'Home', to: '/' },
@@ -70,7 +71,7 @@ export function Header() {
           {/* Left: logo */}
           <Link to="/" className="flex items-center gap-2 text-ivory-100" aria-label="Home">
             <img
-              src="/src/images/Gemwale.png"
+              src={gemwaleLogo}
               alt="GemWale"
               className="mt-[10px] h-20 w-20 sm:h-24 sm:w-24 lg:h-60 lg:w-60"
             />
