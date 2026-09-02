@@ -1,18 +1,24 @@
 import type { Category, Collection, Product } from '@/types';
 
-const img = (id: string) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=900`;
-import demoImage from '../images/demo.jpg';
+  const img = (id: string) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=900`;
+  import demoImage from '../images/demo.jpg';
+  import NecklaceCover from '../images/Category/Necklaces.webp';
+  import PendantsCover from '../images/Category/Pendants.webp';
+  import BraceletsCover from '../images/Category/Bracelets.webp';
+  import Earringscover from '../images/Category/Earrings.webp';
+  import KeychainsCover from '../images/Category/Keychains.webp';
+  import MalasCover from '../images/Category/Malas.webp';
 
 const categoryCoverImage = demoImage;
 
 export const categories: Category[] = [
-  { id: 'cat-necklaces', name: 'Necklaces', slug: 'necklaces', description: 'Statement necklaces and delicate chains that carry the soul of gemstones.', image_url: categoryCoverImage, display_order: 1 },
-  { id: 'cat-pendants', name: 'Pendants', slug: 'pendants', description: 'Solitary gemstones set to rest against your skin.', image_url: categoryCoverImage, display_order: 2 },
-  { id: 'cat-bracelets', name: 'Bracelets', slug: 'bracelets', description: 'Wrist pieces made for everyday wear and every vibe.', image_url: categoryCoverImage, display_order: 3 },
-  { id: 'cat-rings', name: 'Rings', slug: 'rings', description: 'Bold rings and stacking bands with a gemstone heart.', image_url: categoryCoverImage, display_order: 4 },
-  { id: 'cat-malas', name: 'Malas', slug: 'malas', description: 'Hand-strung gemstone malas for intention and adornment.', image_url: categoryCoverImage, display_order: 5 },
-  { id: 'cat-earrings', name: 'Earrings', slug: 'earrings', description: 'From subtle studs to sculptural drops.', image_url: categoryCoverImage, display_order: 6 },
-  { id: 'cat-keychains', name: 'Keychains', slug: 'keychains', description: 'Gemstone keychains — small pieces, big energy.', image_url: categoryCoverImage, display_order: 7 },
+  { id: 'cat-necklaces', name: 'Necklaces', slug: 'necklaces', description: 'Statement necklaces and delicate chains that carry the soul of gemstones.', image_url: NecklaceCover, display_order: 1 },
+  { id: 'cat-pendants', name: 'Pendants', slug: 'pendants', description: 'Solitary gemstones set to rest against your skin.', image_url: PendantsCover, display_order: 2 },
+  { id: 'cat-bracelets', name: 'Bracelets', slug: 'bracelets', description: 'Wrist pieces made for everyday wear and every vibe.', image_url: BraceletsCover, display_order: 3 },
+  // { id: 'cat-rings', name: 'Rings', slug: 'rings', description: 'Bold rings and stacking bands with a gemstone heart.', image_url: categoryCoverImage, display_order: 4 },
+  { id: 'cat-malas', name: 'Malas', slug: 'malas', description: 'Hand-strung gemstone malas for intention and adornment.', image_url: MalasCover  , display_order: 5 },
+  { id: 'cat-earrings', name: 'Earrings', slug: 'earrings', description: 'From subtle studs to sculptural drops.', image_url: Earringscover, display_order: 6 },
+  { id: 'cat-keychains', name: 'Keychains', slug: 'keychains', description: 'Gemstone keychains — small pieces, big energy.', image_url: KeychainsCover, display_order: 7 },
 ];
 
 export const collections: Collection[] = [
@@ -21,7 +27,7 @@ export const collections: Collection[] = [
   { id: 'col-trending', name: 'Trending Now', slug: 'trending', tagline: 'Trending नाउ', description: 'What the world is wearing right now.', image_url: img('1454113009175-9a4b1c3de9a4'), display_order: 3 },
   // { id: 'col-  featured-edit', name: 'Featured Edit', slug: 'featured-edit', tagline: 'Featured एडिट', description: 'The GemWale Edit — pieces that match every version of you.', image_url: img('1454113009175-9a4b1c3de9a4'), display_order: 4 },
   { id: 'col-latest-drops', name: 'Latest Drops', slug: 'latest-drops', tagline: 'Latest ड्रॉप्स', description: 'Just dropped. Limited quantities.', image_url: img('1454113009175-9a4b1c3de9a4'), display_order: 5 },
-  { id: 'col-fresh-styles', name: 'Fresh Styles', slug: 'fresh-styles', tagline: 'Fresh स्टाइल्स', description: 'Your style. Your vibe. Your GemWale.', image_url: img('1454113009175-9a4b1c3de9a4'), display_order: 6 },
+  // { id: 'col-fresh-styles', name: 'Fresh Styles', slug: 'fresh-styles', tagline: 'Fresh स्टाइल्स', description: 'Your style. Your vibe. Your GemWale.', image_url: img('1454113009175-9a4b1c3de9a4'), display_order: 6 },
   // { id: 'col-signature-pieces', name: 'Signature Pieces', slug: 'signature-pieces', tagline: 'Signature पीसेस', description: 'The hero pieces that define the house.', image_url: img('1454113009175-9a4b1c3de9a4'), display_order: 7 },
   { id: 'col-limited-edition', name: 'Limited Edition', slug: 'limited-edition', tagline: 'Limited एडिशन', description: 'Exclusive, numbered, and never repeated.', image_url: img('1454113009175-9a4b1c3de9a4'), display_order: 8 },
   { id: 'col-top-picks', name: 'Top Picks', slug: 'top-picks', tagline: 'Top पिक्स', description: 'Our atelier’s most-loved selections.', image_url: img('1454113009175-9a4b1c3de9a4'), display_order: 9 },

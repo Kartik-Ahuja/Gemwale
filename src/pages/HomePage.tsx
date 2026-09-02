@@ -8,17 +8,20 @@ import { ProductCard } from '@/components/ProductCard';
 import { FloatingMotif, JharokhaArch, JaaliPattern, OrnamentalDivider, PeacockCurve, SectionReveal } from '@/components/Ornaments';
 import { getProducts } from '@/lib/productStore';
 import type { Product } from '@/types';
+import MainHero from '../images/hero section/main-hero.webp';
+import demo1 from '../images/demo.jpg';
+import demo2 from '../images/demo2.jpeg';
 
 const lifestyleScenes = [
-  { label: 'Café', img: 'https://images.pexels.com/photos/1855214/pexels-photo-1855214.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { label: 'Date', img: 'https://images.pexels.com/photos/1024311/pexels-photo-1024311.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { label: 'College', img: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { label: 'Work', img: 'https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { label: 'Wedding', img: 'https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { label: 'Traditional', img: 'https://images.pexels.com/photos/1462970/pexels-photo-1462970.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { label: 'Beach', img: 'https://images.pexels.com/photos/2068299/pexels-photo-2068299.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { label: 'Casual', img: 'https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { label: 'Party', img: 'https://images.pexels.com/photos/1684187/pexels-photo-1684187.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { label: 'Café', img: demo1 },
+  { label: 'Date', img: demo2 },
+  { label: 'College', img: demo1 },
+  { label: 'Work', img: demo2 },
+  { label: 'Wedding', img: demo1 },
+  { label: 'Traditional', img: demo2 },
+  { label: 'Beach', img: demo1 },
+  { label: 'Casual', img: demo2 },
+  { label: 'Party', img: demo1 },
 ];
 
 const testimonials = [
@@ -28,17 +31,9 @@ const testimonials = [
   { name: 'Meera J.', text: 'I gifted my mother a Surya pendant and kept the matching earrings. No age limit, truly.', role: 'Jaipur' },
 ];
 
-const instagramPosts = [
-  'https://images.pexels.com/photos/1454113009175-9a4b1c3de9a4/pexels-photo-1454113009175-9a4b1c3de9a4.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/1616406/pexels-photo-1616406.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/1458946/pexels-photo-1458946.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/9428816/pexels-photo-9428816.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/1306248/pexels-photo-1306248.jpeg?auto=compress&cs=tinysrgb&w=600',
-  'https://images.pexels.com/photos/2536965/pexels-photo-2536965.jpeg?auto=compress&cs=tinysrgb&w=600',
-];
+const instagramPosts = [demo1, demo2, demo1, demo2, demo1, demo2];
 
-const heroLeftImage = new URL('../images/hero section/Hero-Left.png', import.meta.url).href;
-const heroRightImage = new URL('../images/hero section/Hero-right.png', import.meta.url).href;
+// (hero image imported above as `MainHero`)
 
 export function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -54,86 +49,93 @@ export function HomePage() {
     })();
   }, []);
 
-  const newArrivals = products.filter((p) => p.is_new_arrival);
+  // const newArrivals = products.filter((p) => p.is_new_arrival);
   const bestSellers = products.filter((p) => p.is_bestseller);
   const trending = products.filter((p) => p.is_trending);
   const latestDrops = products.filter((p) => p.is_new_arrival || p.is_limited_edition).slice(0, 8);
-  const signature = products.filter((p) => p.is_featured).slice(0, 4);
+  // const signature = products.filter((p) => p.is_featured).slice(0, 4);
   const limited = products.filter((p) => p.is_limited_edition);
   const topPicks = [...bestSellers, ...trending].slice(0, 8);
-  const unisex = products.filter((p) => p.is_unisex);
+  // const unisex = products.filter((p) => p.is_unisex);
 
   return (
     <div className="overflow-hidden">
-      {/* HERO */}
-      {/* <section ref={heroRef} className="relative flex h-screen min-h-[640px] items-center justify-center overflow-hidden">
-        <motion.div style={{ y: heroY }} className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-burgundy-950/70 via-burgundy-900/50 to-burgundy-950" />
-        </motion.div>
 
-        <div className="container-editorial relative z-10 grid h-full gap-8 xl:grid-cols-[minmax(320px,1fr)_minmax(420px,560px)_minmax(320px,1fr)] xl:items-center">
-       <div className="container-editorial relative z-10 grid h-full gap-8 xl:grid-cols-[minmax(360px,1.2fr)_minmax(420px,560px)_minmax(320px,1fr)] xl:items-center">
+<section
+  ref={heroRef}
+  
+  className="relative flex h-screen min-h-[640px] items-center justify-center overflow-hidden"
+>
+  
+ 
+  {/* ================= BACKGROUND ================= */}
+  <motion.div
+  style={{ y: heroY }}
+  className="pointer-events-none absolute inset-0"
+>
+  <img
+    src={MainHero}
+    alt="GemWale hero background"
+    className="absolute inset-0 h-full w-full object-cover opacity-15"
+  />
 
-  <div className="order-1 w-full xl:order-1 xl:mx-0 xl:w-full xl:pl-6">
-    <img
-      src={heroLeftImage}
-      alt="GemWale jewellery collection"
-      className="h-[620px] w-full rounded-[32px] object-cover object-center"
-    />
-  </div>
 
-</div>
+  <div className="absolute inset-0 bg-burgundy-950/20" />
+</motion.div>
 
-          <motion.div style={{ opacity: heroOpacity }} className="order-2 flex h-full flex-col items-center justify-center text-center xl:order-2 xl:text-center">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className="section-eyebrow mb-5"
-            >
-              Premium Gemstone Jewellery
-            </motion.p>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.1, delay: 0.5 }}
-              className="font-display text-4xl leading-[1.05] text-ivory-100 text-shadow-lux sm:text-6xl lg:text-7xl xl:text-8xl"
-            >
-              <span className="gold-text-gradient">ज्वेलरी</span> That
-              <br />
-              Matches Your <span className="gold-text-gradient">Vibe.</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.8 }}
-              className="mx-auto mt-5 max-w-xl font-serif text-lg italic text-ivory-100/80 sm:text-xl"
-            >
-              Anywhere. Everywhere.
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1 }}
-              className="mx-auto mt-4 max-w-md text-sm text-ivory-100/60 sm:text-base"
-            >
-              Gemstone jewellery designed for every age, every style, and every occasion.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.2 }}
-              className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row xl:justify-center"
-            >
-              <Link to="/shop" className="btn-gold-solid">Shop the Collection</Link>
-              <Link to="/about" className="btn-outline">Explore GemWale</Link>
-            </motion.div>
+
+   <FloatingMotif className="left-8 top-24 h-32 w-32 opacity-20" delay={0}>
+          <JharokhaArch className="h-full w-full" />
+        </FloatingMotif>
+        <FloatingMotif className="right-10 bottom-32 h-28 w-28 opacity-15" delay={2}>
+          <PeacockCurve className="h-full w-full" />
+        </FloatingMotif>
+
+        <motion.div style={{ opacity: heroOpacity }} className="container-editorial relative z-10 text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="section-eyebrow mb-5"
+          >
+            Premium Gemstone Jewellery
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, delay: 0.5 }}
+            className="font-display text-4xl leading-[1.05] text-ivory-100 text-shadow-lux sm:text-6xl lg:text-7xl xl:text-8xl"
+          >
+            ज्वेलरी  That
+            <br />
+            Matches Your <span className="gold-text-gradient">Vibe.</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="mx-auto mt-5 max-w-xl font-serif text-lg italic text-ivory-100/80 sm:text-xl"
+          >
+            Anywhere. Everywhere.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+            className="mx-auto mt-4 max-w-md text-sm text-ivory-100/60 sm:text-base"
+          >
+            Gemstone jewellery designed for every age, every style, and every occasion.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.2 }}
+            className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          >
+            <Link to="/shop" className="btn-gold-solid">Shop the Collection</Link>
+            <Link to="/about" className="btn-outline">Explore GemWale</Link>
           </motion.div>
-
-          <div className="hidden order-3 xl:block xl:mx-0 xl:max-w-none xl:pr-6 xl:order-3 xl:h-full">
-            <img src={heroRightImage} alt="GemWale hero right" className="h-full w-full rounded-[32px] object-cover" />
-          </div>
-        </div>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
@@ -150,404 +152,6 @@ export function HomePage() {
             <ChevronDown className="mx-auto h-5 w-5" />
           </motion.div>
         </motion.div>
-      </section> */}
-
-<section
-  ref={heroRef}
-  className="relative overflow-hidden bg-burgundy-950 lg:min-h-screen"
->
-  {/* ================= BACKGROUND ================= */}
-  <motion.div
-    style={{ y: heroY }}
-    className="pointer-events-none absolute inset-0"
-  >
-    <div className="absolute inset-0 bg-gradient-to-b from-burgundy-950 via-burgundy-900/90 to-burgundy-950" />
-  </motion.div>
-
-
-  {/* ================= MAIN HERO CONTAINER ================= */}
-  <div
-    className="
-      relative z-10 mx-auto w-full max-w-[1800px]
-
-      /* MOBILE */
-      flex flex-col
-      px-4
-      pt-[72px]
-      pb-8
-
-      /* SMALL MOBILE */
-      sm:px-6
-      sm:pt-[80px]
-      sm:pb-10
-
-      /* DESKTOP */
-      lg:grid
-      lg:min-h-screen
-      lg:grid-cols-[1fr_600px_1fr]
-      lg:items-center
-      lg:gap-6
-      lg:px-8
-      lg:pt-20
-      lg:pb-10
-
-      /* LARGE DESKTOP */
-      xl:grid-cols-[1fr_680px_1fr]
-      xl:gap-10
-    "
-  >
-
-    {/* =====================================================
-        MOBILE IMAGE
-    ====================================================== */}
-    <div
-      className="
-        flex
-        w-full
-        justify-center
-        lg:hidden
-      "
-    >
-      <img
-        src={heroLeftImage}
-        alt="GemWale jewellery collection"
-        className="
-          h-[175px]
-          w-[82%]
-          object-contain
-          object-top
-
-          sm:h-[205px]
-          sm:w-[65%]
-        "
-      />
-    </div>
-
-
-   {/* =====================================================
-    LEFT DESKTOP IMAGE
-===================================================== */}
-<div
-  className="
-    hidden
-    h-full
-    items-end
-    justify-center
-    lg:flex
-  "
->
-  <img
-    src={heroLeftImage}
-    alt="GemWale jewellery collection"
-    className="
-      h-[76vh]
-      max-h-[680px]
-      min-h-[500px]
-      w-full
-      object-contain
-      object-bottom
-    "
-  />
-</div>
-
-
-    {/* =====================================================
-        CENTER CONTENT
-    ====================================================== */}
-    <motion.div
-      style={{ opacity: heroOpacity }}
-      className="
-        flex
-        flex-col
-        items-center
-        justify-start
-        text-center
-
-        pt-2
-
-        sm:pt-4
-
-        lg:h-full
-        lg:justify-center
-        lg:pt-0
-      "
-    >
-
-      {/* ================= EYEBROW ================= */}
-      <motion.p
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.8,
-          delay: 0.3,
-        }}
-        className="
-          section-eyebrow
-          mb-2
-          text-[8px]
-          tracking-[0.22em]
-
-          sm:mb-3
-          sm:text-[10px]
-
-          lg:mb-4
-          lg:text-sm
-        "
-      >
-        Premium Gemstone Jewellery
-      </motion.p>
-
-
-      {/* ================= MAIN HEADING ================= */}
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 1,
-          delay: 0.5,
-        }}
-        className="
-          font-display
-          text-[2rem]
-          leading-[1.02]
-          text-ivory-100
-          text-shadow-lux
-
-          sm:text-[2.7rem]
-          md:text-5xl
-
-          lg:text-[4.4rem]
-          xl:text-[5rem]
-        "
-      >
-        <span className="gold-text-gradient">
-          ज्वेलरी
-        </span>{" "}
-        That
-        <br />
-        Matches Your{" "}
-        <span className="gold-text-gradient">
-          Vibe.
-        </span>
-      </motion.h1>
-
-
-      {/* ================= TAGLINE ================= */}
-      <motion.p
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.8,
-          delay: 0.8,
-        }}
-        className="
-          mt-2
-          font-serif
-          text-[10px]
-          italic
-          text-ivory-100/80
-
-          sm:mt-4
-          sm:text-sm
-
-          lg:mt-6
-          lg:text-xl
-        "
-      >
-        Anywhere. Everywhere.
-      </motion.p>
-
-
-      {/* ================= DESCRIPTION ================= */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          duration: 0.8,
-          delay: 1,
-        }}
-        className="
-          mx-auto
-          mt-2
-          max-w-[310px]
-          px-1
-          text-[9px]
-          leading-[1.45]
-          text-ivory-100/60
-
-          sm:mt-3
-          sm:max-w-md
-          sm:text-xs
-
-          lg:mt-4
-          lg:max-w-[480px]
-          lg:text-base
-        "
-      >
-        Gemstone jewellery designed for every age,
-        every style, and every occasion.
-      </motion.p>
-
-
-      {/* ================= CTA ================= */}
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: 0.8,
-          delay: 1.2,
-        }}
-        className="
-          mt-4
-
-          sm:mt-6
-
-          lg:mt-9
-        "
-      >
-        <Link
-          to="/shop"
-          className="
-            btn-gold-solid
-            inline-flex
-            items-center
-            justify-center
-
-            px-7
-            py-2.5
-
-            text-[8px]
-            tracking-[0.2em]
-
-            sm:px-9
-            sm:py-3
-            sm:text-[10px]
-
-            lg:px-10
-            lg:py-3.5
-            lg:text-xs
-          "
-        >
-          Shop the Collection
-        </Link>
-      </motion.div>
-
-
-      {/* =====================================================
-          MOBILE SCROLL INDICATOR
-          IMPORTANT: NO absolute positioning / NO mt-auto
-      ====================================================== */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{
-          delay: 1.8,
-        }}
-        className="
-          mt-10
-          flex
-          flex-col
-          items-center
-          justify-center
-
-          sm:mt-12
-
-          lg:hidden
-        "
-      >
-        <p
-          className="
-            text-[7px]
-            uppercase
-            tracking-[0.3em]
-            text-ivory-100/50
-
-            sm:text-[9px]
-          "
-        >
-          Scroll to Explore
-        </p>
-
-        <motion.div
-          animate={{
-            y: [0, 6, 0],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-          }}
-          className="mt-1 text-gold-400"
-        >
-          <ChevronDown className="mx-auto h-3.5 w-3.5 sm:h-4 sm:w-4" />
-        </motion.div>
-      </motion.div>
-    </motion.div>
-
-
-    {/* =====================================================
-    RIGHT DESKTOP IMAGE
-===================================================== */}
-<div
-  className="
-    hidden
-    h-full
-    items-end
-    justify-center
-    lg:flex
-  "
->
-  <img
-    src={heroRightImage}
-    alt="GemWale jewellery collection"
-    className="
-      h-[76vh]
-      max-h-[680px]
-      min-h-[500px]
-      w-full
-      object-contain
-      object-bottom
-    "
-  />
-</div>  </div>
-
-
-  {/* =====================================================
-      DESKTOP SCROLL INDICATOR
-  ====================================================== */}
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{
-      delay: 1.8,
-    }}
-    className="
-      absolute
-      bottom-5
-      left-1/2
-      z-20
-      hidden
-      -translate-x-1/2
-      text-center
-      lg:block
-    "
-  >
-    <p className="text-[9px] uppercase tracking-[0.3em] text-ivory-100/50">
-      Scroll to Explore
-    </p>
-
-    <motion.div
-      animate={{
-        y: [0, 7, 0],
-      }}
-      transition={{
-        duration: 2,
-        repeat: Infinity,
-      }}
-      className="mt-1 text-gold-400"
-    >
-      <ChevronDown className="mx-auto h-4 w-4" />
-    </motion.div>
-  </motion.div>
 </section>
       {/* BRAND STATEMENT */}
       <section className="relative overflow-hidden border-b border-gold-400/10 bg-burgundy-950 py-24 text-center">
@@ -585,7 +189,7 @@ export function HomePage() {
             </p>
           </SectionReveal>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 ">
             {categories.map((cat, i) => (
               <SectionReveal key={cat.id} delay={i * 0.05}>
                 <Link to={`/category/${cat.slug}`} className="group block">
@@ -611,7 +215,7 @@ export function HomePage() {
       <SectionBlock eyebrow="Best Sellers" bilingual="Best सेलर्स" subtitle="The pieces our community keeps coming back for." products={bestSellers} cta="Shop ऑल" ctaLink="/collections/best-sellers" carousel dark />
 
       {/* LIFESTYLE */}
-      <section className="border-b border-gold-400/10 py-20">
+      {/* <section className="border-b border-gold-400/10 py-20">
         <div className="container-editorial mb-10 text-center">
           <SectionReveal>
             <p className="section-eyebrow mb-3">The Vibe Edit</p>
@@ -633,10 +237,10 @@ export function HomePage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* TRENDING */}
-      <SectionBlock eyebrow="Trending" bilingual="Trending नाउ" subtitle="What the world is wearing right now." products={trending} cta="See मोर" ctaLink="/collections/trending" carousel />
+      <SectionBlock  eyebrow="Trending" bilingual="Trending नाउ" subtitle="What the world is wearing right now." products={trending} cta="See मोर" ctaLink="/collections/trending" carousel />
 
       {/* FEATURED EDIT */}
       {/* <section className="relative overflow-hidden border-b border-gold-400/10 bg-burgundy-950 py-24">
@@ -703,7 +307,7 @@ export function HomePage() {
           <h2 className="font-display text-3xl leading-tight text-ivory-100 sm:text-5xl lg:text-6xl">
             Rooted in <span className="gold-text-gradient">Rajasthan.</span>
             <br />
-            Made for Everywhere.
+            <span className="gold-text-gradient">Made</span> for Everywhere.
           </h2>
           <OrnamentalDivider className="mt-7" />
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-ivory-100/70">
@@ -716,7 +320,7 @@ export function HomePage() {
       </section>
 
       {/* FRESH STYLES */}
-      <section className="border-b border-gold-400/10 py-20">
+      {/* <section className="border-b border-gold-400/10 py-20">
         <div className="container-editorial">
           <SectionReveal className="mb-10 text-center">
             <p className="section-eyebrow mb-3">Style It Your Way</p>
@@ -742,7 +346,7 @@ export function HomePage() {
             </p>
           </SectionReveal>
         </div>
-      </section>
+      </section> */}
 
       {/* SIGNATURE PIECES */}
       {/* <SectionBlock eyebrow="Premium Selection" bilingual="Signature पीसेस" subtitle="The hero pieces that define the house." products={signature} cta="Explore Edit" ctaLink="/collections/signature-pieces" carousel dark /> */}
@@ -835,7 +439,7 @@ export function HomePage() {
           <SectionReveal className="mb-10 text-center">
             <p className="section-eyebrow mb-3">Follow the Vibe</p>
             <h2 className="font-display text-3xl text-ivory-100 sm:text-5xl">
-              #<span className="gold-text-gradient">WEARGEMWALE</span>
+              <span className="gold-text-gradient">Connect with us socially</span>
             </h2>
           </SectionReveal>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">

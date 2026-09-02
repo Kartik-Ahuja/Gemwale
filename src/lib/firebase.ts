@@ -1,13 +1,14 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore, type Firestore } from 'firebase/firestore';
-import { getAnalytics, type Analytics } from 'firebase/analytics';
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import {
+  getFirestore,
+  type Firestore,
+} from 'firebase/firestore';
+import {
+  getAnalytics,
+  type Analytics,
+  isSupported,
+} from 'firebase/analytics';
 
-// Import the functions you need from the SDKs you need
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN as string,
@@ -18,10 +19,41 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID as string,
 };
 
-export const isFirebaseConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.appId);
+export const isFirebaseConfigured = Boolean(
+  firebaseConfig.apiKey &&
+  firebaseConfig.projectId &&
+  firebaseConfig.appId
+);
 
-export const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null;
-export const db: Firestore | null = isFirebaseConfigured && app ? getFirestore(app) : null;
-export const analytics: Analytics | null = typeof window !== 'undefined' && app ? getAnalytics(app) : null;
+// Initialize Firebase only once
+export const app = isFirebaseConfigured
+  ? getApps().length > 0
+    ? getApp()
+    : initializeApp(firebaseConfig)
+  : null;
 
-export const WHATSAPP_NUMBER = (import.meta.env.VITE_WHATSAPP_NUMBER as string) || '918696607292';
+// Firestore
+export const db: Firestore | null =
+  app && isFirebaseConfigured
+    ? getFirestore(app)
+    : null;
+
+// Analytics
+export let analytics: Analytics | null = null;
+
+if (typeof window !== 'undefined' && app) {
+  isSupported()
+    .then((supported) => {
+      if (supported) {
+        analytics = getAnalytics(app);
+      }
+    })
+    .catch(() => {
+      analytics = null;
+    });
+}
+
+// WhatsApp number
+export const WHATSAPP_NUMBER =
+  (import.meta.env.VITE_WHATSAPP_NUMBER as string) ||
+  '918696607292';

@@ -557,7 +557,7 @@ function ProductEditModal({ product, onClose, onSaved }: { product: Product | nu
               />
             </L>
             <p className="mt-2 text-xs text-ivory-100/50">
-              Selected images are saved with the product. If Supabase Storage is available, they are uploaded there; otherwise they are stored as embedded image data.
+              Selected images are embedded directly into the product record, so no Supabase or storage permissions are required.
             </p>
             {selectedFiles.length > 0 && <p className="mt-1 text-xs text-gold-300">{selectedFiles.length} image(s) selected</p>}
             {uploadError && <p className="mt-2 text-sm text-red-300">{uploadError}</p>}

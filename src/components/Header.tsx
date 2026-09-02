@@ -56,16 +56,16 @@ export function Header() {
     setMegaOpen(null);
   }, [location.pathname]);
 
-  const transparent = isHome && !scrolled;
-  const solidBg = 'bg-burgundy-900/95 backdrop-blur-md border-b border-gold-400/15';
-  const transparentBg = 'bg-transparent';
+  const headerClasses = isHome
+    ? scrolled
+      ? 'bg-burgundy-900/75 backdrop-blur-md border-b border-gold-400/15'
+      : 'bg-burgundy-900/35 backdrop-blur-md border-b border-gold-400/10'
+    : 'bg-burgundy-900/95 backdrop-blur-md border-b border-gold-400/15';
 
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-          transparent ? transparentBg : solidBg
-        }`}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${headerClasses}`}
       >
         <div className="container-editorial flex h-16 items-center justify-between lg:h-20">
           {/* Left: logo */}
@@ -232,7 +232,7 @@ function MegaMenu({ links, title }: { links: { label: string; to: string }[]; ti
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
       transition={{ duration: 0.25 }}
-      className="absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 border border-gold-400/20 bg-burgundy-900/98 p-5 backdrop-blur-md"
+      className="absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 border border-gold-400/20 bg-burgundy-900/70 p-5 backdrop-blur-xl shadow-[0_18px_40px_rgba(0,0,0,0.28)]"
     >
       <p className="mb-3 text-[10px] uppercase tracking-[0.3em] text-gold-400">{title}</p>
       <div className="grid grid-cols-1 gap-1">

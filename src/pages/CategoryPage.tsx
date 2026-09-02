@@ -92,7 +92,7 @@ export function CategoryPage() {
         eyebrow="Shop by Category"
         title={category.name}
         description={category.description}
-        image={category.image_url}
+        // image={category.image_url}
       />
 
       <section className="py-12">
