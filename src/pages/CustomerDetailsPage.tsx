@@ -53,10 +53,6 @@ export function CustomerDetailsPage() {
     try {
       const orderId = generateOrderId();
 
-      if (!db) {
-        throw new Error('Checkout is currently unavailable because Firebase is not configured.');
-      }
-
       const items = cart.map((i) => ({
         order_id: orderId,
         product_code: i.product_code,
@@ -66,25 +62,31 @@ export function CustomerDetailsPage() {
         price: i.price,
       }));
 
-      const orderRef = doc(collection(db, 'orders'));
-      await setDoc(orderRef, {
-        order_id: orderId,
-        total: cartTotal,
-        order_status: 'WhatsApp Contacted',
-        payment_status: 'Pending',
-        customers: {
-          full_name: form.full_name,
-          phone: form.phone,
-          email: form.email || null,
-          address: form.address,
-          city: form.city,
-          state: form.state,
-          pin_code: form.pin_code,
-          country: form.country,
-        },
-        order_items: items,
-        created_at: new Date().toISOString(),
-      });
+      if (db) {
+        try {
+          const orderRef = doc(collection(db, 'orders'));
+          await setDoc(orderRef, {
+            order_id: orderId,
+            total: cartTotal,
+            order_status: 'WhatsApp Contacted',
+            payment_status: 'Pending',
+            customers: {
+              full_name: form.full_name,
+              phone: form.phone,
+              email: form.email || null,
+              address: form.address,
+              city: form.city,
+              state: form.state,
+              pin_code: form.pin_code,
+              country: form.country,
+            },
+            order_items: items,
+            created_at: new Date().toISOString(),
+          });
+        } catch (saveError) {
+          console.warn('Order could not be saved to Firebase; continuing with WhatsApp checkout.', saveError);
+        }
+      }
 
       // 4. Build WhatsApp message
       const itemLines = cart
@@ -181,7 +183,7 @@ Please confirm availability and share payment details.`;
                 )}
               </button>
               <p className="mt-3 text-center text-xs text-ivory-100/40">
-                Your order will be saved and WhatsApp will open with the full order details.
+                WhatsApp will open with your full order details.
               </p>
             </form>
 

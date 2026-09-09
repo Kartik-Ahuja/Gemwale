@@ -4,6 +4,10 @@ import {
   type Firestore,
 } from 'firebase/firestore';
 import {
+  getStorage,
+  type FirebaseStorage,
+} from 'firebase/storage';
+import {
   getAnalytics,
   type Analytics,
   isSupported,
@@ -25,20 +29,22 @@ export const isFirebaseConfigured = Boolean(
   firebaseConfig.appId
 );
 
-// Initialize Firebase only once
 export const app = isFirebaseConfigured
   ? getApps().length > 0
     ? getApp()
     : initializeApp(firebaseConfig)
   : null;
 
-// Firestore
 export const db: Firestore | null =
   app && isFirebaseConfigured
     ? getFirestore(app)
     : null;
 
-// Analytics
+export const storage: FirebaseStorage | null =
+  app && isFirebaseConfigured
+    ? getStorage(app)
+    : null;
+
 export let analytics: Analytics | null = null;
 
 if (typeof window !== 'undefined' && app) {
@@ -53,7 +59,6 @@ if (typeof window !== 'undefined' && app) {
     });
 }
 
-// WhatsApp number
 export const WHATSAPP_NUMBER =
   (import.meta.env.VITE_WHATSAPP_NUMBER as string) ||
   '918696607292';

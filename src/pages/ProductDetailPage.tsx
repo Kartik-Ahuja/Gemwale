@@ -19,7 +19,7 @@ export function ProductDetailPage() {
   const [activeImg, setActiveImg] = useState(0);
   const [colour, setColour] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [tab, setTab] = useState<'description' | 'details' | 'care'>('description');
+  const [tab, setTab] = useState<'description' | 'care'>('description');
 
   useEffect(() => {
     if (!slug) return;
@@ -181,7 +181,7 @@ export function ProductDetailPage() {
             {/* Tabs */}
             <div className="mt-10 border-t border-gold-400/15 pt-6">
               <div className="mb-5 flex gap-6">
-                {(['description', 'details', 'care'] as const).map((t) => (
+                {(['description', 'care'] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setTab(t)}
@@ -201,7 +201,6 @@ export function ProductDetailPage() {
                 className="text-sm leading-relaxed text-ivory-100/70"
               >
                 {tab === 'description' && product.description}
-                {tab === 'details' && product.details}
                 {tab === 'care' && product.care_instructions}
               </motion.p>
             </div>

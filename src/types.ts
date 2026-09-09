@@ -50,7 +50,6 @@ export interface Product {
   colours: string[];
   images: string[];
   description: string;
-  details: string;
   care_instructions: string;
   stock: number;
   availability: string;

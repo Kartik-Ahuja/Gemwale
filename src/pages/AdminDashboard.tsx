@@ -5,7 +5,14 @@ import {
   Loader2, Plus, Pencil, Trash2, X, Check, LogOut, Lock, Mail,
 } from 'lucide-react';
 import { categories, collections } from '@/data/catalog';
-import { deleteProduct as deleteStoredProduct, getProducts, seedProductsToDb, upsertProduct } from '@/lib/productStore';
+// import { deleteProduct as deleteStoredProduct, getProducts, seedProductsToDb, upsertProduct } from '@/lib/productStore';
+import {
+  deleteProduct,
+  getProducts,
+  seedProductsToDb,
+  uploadProductImages,
+  upsertProduct,
+} from '@/lib/productStore';
 import { OrnamentalDivider } from '@/components/Ornaments';
 import type { OrderStatus, PaymentStatus, Product } from '@/types';
 
@@ -73,10 +80,17 @@ const fetchProducts = async () => {
     fetchOrders();
   };
 
-  const deleteProduct = async (id: string) => {
-    await deleteStoredProduct(id);
-    fetchProducts();
-  };
+  const handleDeleteProduct = async (id: string) => {
+  try {
+    await deleteProduct(id);
+    await fetchProducts();
+  } catch (error) {
+    console.error(
+      'Failed to delete product:',
+      error
+    );
+  }
+};
 
   const stats = {
     total: orders.length,
@@ -227,7 +241,7 @@ const fetchProducts = async () => {
               <ProductsTab
                 products={dbProducts}
                 onEdit={setEditingProduct}
-                onDelete={deleteProduct}
+onDelete={handleDeleteProduct}
                 onSaved={fetchProducts}
               />
             )}
@@ -447,7 +461,7 @@ function ProductEditModal({ product, onClose, onSaved }: { product: Product | nu
   const [form, setForm] = useState<Partial<Product>>(
     product || {
       name: '', slug: '', product_code: '', price: 0, category_id: null, collection_id: null,
-      colour: '', colours: [], images: [], description: '', details: '', care_instructions: '',
+      colour: '', colours: [], images: [], description: '', care_instructions: '',
       stock: 10, availability: 'In Stock', is_featured: false, is_bestseller: false,
       is_trending: false, is_new_arrival: false, is_limited_edition: false, is_unisex: false,
       display_order: 0,
@@ -462,57 +476,122 @@ function ProductEditModal({ product, onClose, onSaved }: { product: Product | nu
 
   const set = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
 
-  const fileToDataUrl = (file: File) => new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = () => reject(new Error('Failed to read selected image.'));
-    reader.readAsDataURL(file);
-  });
+  
 
-  const handleSave = async () => {
-    setSaving(true);
-    setUploadError('');
+const handleSave = async () => {
+  setSaving(true);
+  setUploadError('');
 
-    try {
-      let uploadedImageUrls: string[] = [];
-      if (selectedFiles.length > 0) {
-        setUploadingImages(true);
-        uploadedImageUrls = await Promise.all(
-          selectedFiles.map(async (file) => fileToDataUrl(file)),
+  try {
+    /**
+     * For new products we need an ID before
+     * uploading images because images are stored at:
+     *
+     * products/{productId}/image.jpg
+     */
+    const productId =
+      product?.id ||
+      crypto.randomUUID();
+
+    let uploadedImageUrls: string[] = [];
+
+    /**
+     * Upload selected files directly
+     * to Firebase Storage.
+     */
+    if (selectedFiles.length > 0) {
+      setUploadingImages(true);
+
+      uploadedImageUrls =
+        await uploadProductImages(
+          selectedFiles,
+          productId
         );
-      }
+    }
 
-      const manualImages = imagesInput
+    /**
+     * Existing/manual image URLs.
+     */
+    const manualImages =
+      imagesInput
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean);
 
-      const payload = {
-        ...form,
-        slug: form.slug || (form.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + (form.product_code || '').toLowerCase(),
-        colours: coloursInput.split(',').map((s) => s.trim()).filter(Boolean),
-        images: [...uploadedImageUrls, ...manualImages].filter(Boolean),
-        price: Number(form.price) || 0,
-        stock: Number(form.stock) || 0,
-        display_order: Number(form.display_order) || 0,
-      };
+    /**
+     * Combine Firebase Storage URLs
+     * + manually entered URLs.
+     */
+    const finalImages = [
+      ...uploadedImageUrls,
+      ...manualImages,
+    ].filter(Boolean);
 
-      await upsertProduct({
-        ...payload,
-        id: product?.id,
-      });
+    const payload = {
+      ...form,
 
-      onSaved();
-      onClose();
-    } catch (error: any) {
-      const message = error?.message || 'Unable to save product. Check your Firebase configuration and database permissions.';
-      setUploadError(message);
-      console.error('Product save failed:', error);
-    } finally {
-      setSaving(false);
-      setUploadingImages(false);
-    }
-  };
+      id: productId,
+
+      slug:
+        form.slug ||
+        `${(form.name || '')
+          .toLowerCase()
+          .replace(
+            /[^a-z0-9]+/g,
+            '-'
+          )}-${(
+          form.product_code || ''
+        ).toLowerCase()}`,
+
+      colours:
+        coloursInput
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
+
+      images: finalImages,
+
+      price:
+        Number(form.price) || 0,
+
+      stock:
+        Number(form.stock) || 0,
+
+      display_order:
+        Number(form.display_order) || 0,
+
+      created_at:
+        product?.created_at ||
+        new Date().toISOString(),
+    };
+
+    /**
+     * Save ONLY to Firestore.
+     */
+    await upsertProduct(payload);
+
+    /**
+     * Refresh product list from Firestore.
+     */
+    await onSaved();
+
+    onClose();
+  } catch (error: any) {
+    const message =
+      error?.message ||
+      'Unable to save product. Check Firebase configuration, Storage permissions and Firestore permissions.';
+
+    setUploadError(message);
+
+    console.error(
+      'Product save failed:',
+      error
+    );
+  } finally {
+    setSaving(false);
+    setUploadingImages(false);
+  }
+};
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-burgundy-950/85 p-4 backdrop-blur-sm">
@@ -556,15 +635,14 @@ function ProductEditModal({ product, onClose, onSaved }: { product: Product | nu
                 className="input-field mt-2 file:mr-4 file:rounded file:border-0 file:bg-gold-400 file:px-3 file:py-2 file:text-burgundy-900"
               />
             </L>
-            <p className="mt-2 text-xs text-ivory-100/50">
-              Selected images are embedded directly into the product record, so no Supabase or storage permissions are required.
-            </p>
+           <p className="mt-2 text-xs text-ivory-100/50">
+  Images are securely uploaded to Firebase Storage.
+</p>
             {selectedFiles.length > 0 && <p className="mt-1 text-xs text-gold-300">{selectedFiles.length} image(s) selected</p>}
             {uploadError && <p className="mt-2 text-sm text-red-300">{uploadError}</p>}
           </div>
           <div className="sm:col-span-2"><L label="Image URLs (optional, comma separated)"><input value={imagesInput} onChange={(e) => setImagesInput(e.target.value)} className="input-field" /></L></div>
           <div className="sm:col-span-2"><L label="Description"><textarea rows={3} value={form.description || ''} onChange={(e) => set('description', e.target.value)} className="input-field resize-none" /></L></div>
-          <div className="sm:col-span-2"><L label="Details"><textarea rows={2} value={form.details || ''} onChange={(e) => set('details', e.target.value)} className="input-field resize-none" /></L></div>
           <div className="sm:col-span-2"><L label="Care Instructions"><textarea rows={2} value={form.care_instructions || ''} onChange={(e) => set('care_instructions', e.target.value)} className="input-field resize-none" /></L></div>
         </div>
 
