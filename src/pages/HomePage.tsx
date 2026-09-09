@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ChevronDown, Star } from 'lucide-react';
+import { ArrowRight, ChevronDown, Star, ExternalLink, Loader, Instagram } from 'lucide-react';
 import { categories, collections } from '@/data/catalog';
 import { ProductCarousel } from '@/components/ProductCarousel';
 import { ProductCard } from '@/components/ProductCard';
 import { FloatingMotif, JharokhaArch, JaaliPattern, OrnamentalDivider, PeacockCurve, SectionReveal } from '@/components/Ornaments';
 import { getProducts } from '@/lib/productStore';
+import { getInstagramPosts, type InstagramPost } from '@/lib/instagram';
 import type { Product } from '@/types';
 import MainHero from '../images/hero section/main-hero.webp';
 import demo1 from '../images/demo.jpg';
@@ -31,7 +32,7 @@ const testimonials = [
   { name: 'Meera J.', text: 'I gifted my mother a Surya pendant and kept the matching earrings. No age limit, truly.', role: 'Jaipur' },
 ];
 
-const instagramPosts = [demo1, demo2, demo1, demo2, demo1, demo2];
+// Removed static instagramPosts - now fetched from API
 
 // (hero image imported above as `MainHero`)
 
@@ -41,11 +42,23 @@ export function HomePage() {
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [instagramPosts, setInstagramPosts] = useState<InstagramPost[]>([]);
+  const [isLoadingInstagram, setIsLoadingInstagram] = useState(true);
 
   useEffect(() => {
     (async () => {
       const items = await getProducts();
       setProducts(items as Product[]);
+    })();
+  }, []);
+
+  useEffect(() => {
+    // Fetch Instagram posts
+    (async () => {
+      setIsLoadingInstagram(true);
+      const posts = await getInstagramPosts(6);
+      setInstagramPosts(posts);
+      setIsLoadingInstagram(false);
     })();
   }, []);
 
@@ -434,26 +447,90 @@ export function HomePage() {
       </section>
 
       {/* INSTAGRAM */}
-      <section className="border-b border-gold-400/10 py-20">
+      {/* <section className="border-b border-gold-400/10 py-20">
         <div className="container-editorial">
           <SectionReveal className="mb-10 text-center">
             <p className="section-eyebrow mb-3">Follow the Vibe</p>
             <h2 className="font-display text-3xl text-ivory-100 sm:text-5xl">
               <span className="gold-text-gradient">Connect with us socially</span>
             </h2>
+            <p className="mt-4 text-sm text-ivory-100/70">
+              Follow <span className="font-semibold text-gold-300">@gemwale.comm</span> for exclusive designs, styling tips & gemstone stories
+            </p>
+            <a
+              href="https://www.instagram.com/gemwale.comm"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold-400/50 bg-gold-400/10 px-4 py-2 text-xs uppercase tracking-widest text-gold-300 transition-all hover:bg-gold-400/20 hover:border-gold-400"
+            >
+              <Instagram className="h-3.5 w-3.5" /> Follow on Instagram
+              <ExternalLink className="h-3 w-3" />
+            </a>
           </SectionReveal>
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-            {instagramPosts.map((src, i) => (
-              <SectionReveal key={i} delay={i * 0.05}>
-                <a href="https://www.instagram.com/gemwale.comm" target="_blank" rel="noreferrer" className="group relative aspect-square overflow-hidden bg-burgundy-800">
-                  <img src={src} alt="Instagram" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-burgundy-950/0 transition-colors group-hover:bg-burgundy-950/40" />
-                </a>
-              </SectionReveal>
-            ))}
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {isLoadingInstagram ? (
+              // Loading state
+              [...Array(6)].map((_, i) => (
+                <SectionReveal key={i} delay={i * 0.05}>
+                  <div className="relative aspect-square overflow-hidden border border-gold-400/20 bg-burgundy-800 animate-pulse">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Loader className="h-6 w-6 animate-spin text-gold-300/50" />
+                    </div>
+                  </div>
+                </SectionReveal>
+              ))
+            ) : instagramPosts.length > 0 ? (
+              // Display real posts
+              instagramPosts.map((post, i) => (
+                <SectionReveal key={post.id} delay={i * 0.05}>
+                  <a
+                    href={post.permalink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative aspect-square overflow-hidden border border-gold-400/20 bg-burgundy-800 transition-all hover:border-gold-400/50"
+                  >
+                    <img
+                      src={post.media_url}
+                      alt={post.caption || 'Instagram post'}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    
+                    <div className="absolute inset-0 flex items-center justify-center bg-burgundy-950/0 transition-all group-hover:bg-burgundy-950/40">
+                      <div className="flex flex-col items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100">
+                        {post.media_type === 'VIDEO' && (
+                          <svg className="h-8 w-8 text-gold-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                          </svg>
+                        )}
+                        <Instagram className="h-6 w-6 text-gold-300" />
+                      </div>
+                    </div>
+                  </a>
+                </SectionReveal>
+              ))
+            ) : (
+              // Fallback when no posts available
+              [...Array(6)].map((_, i) => (
+                <SectionReveal key={i} delay={i * 0.05}>
+                  <a
+                    href="https://www.instagram.com/gemwale.comm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative aspect-square overflow-hidden border border-gold-400/20 bg-burgundy-800 transition-all hover:border-gold-400/50"
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center bg-burgundy-950/40 transition-all group-hover:bg-burgundy-950/60">
+                      <div className="flex flex-col items-center gap-2">
+                        <Instagram className="h-6 w-6 text-gold-300" />
+                      </div>
+                    </div>
+                  </a>
+                </SectionReveal>
+              ))
+            )}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* FINAL CTA */}
       <section className="relative overflow-hidden py-28 text-center">

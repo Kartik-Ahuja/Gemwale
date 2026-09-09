@@ -49,7 +49,7 @@ export function ContactPage() {
                     </div>
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400">WhatsApp / Phone</p>
-                      <p className="text-sm text-ivory-100">+91 99999 99999</p>
+                      <p className="text-sm text-ivory-100">+91 95888 97473</p>
                     </div>
                   </a>
                   <a href="mailto:hello@gemwale.com" className="flex items-center gap-4 group">
@@ -58,7 +58,7 @@ export function ContactPage() {
                     </div>
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.25em] text-gold-400">Email</p>
-                      <p className="text-sm text-ivory-100">hello@gemwale.com</p>
+                      <p className="text-sm text-ivory-100">info@gemwale.com</p>
                     </div>
                   </a>
                   <div className="flex items-center gap-4">

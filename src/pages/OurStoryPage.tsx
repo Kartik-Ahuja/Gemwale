@@ -20,23 +20,34 @@ export function OurStoryPage() {
       <section className="border-b border-gold-400/10 py-24">
         <div className="container-editorial max-w-3xl">
           <SectionReveal>
-            <p className="section-eyebrow mb-4">Chapter One</p>
+            {/* <p className="section-eyebrow mb-4">Chapter One</p> */}
             <h2 className="font-display text-3xl leading-tight text-ivory-100 sm:text-4xl">
               It Started With a Stone
             </h2>
             <OrnamentalDivider className="mt-5 justify-start" />
             <div className="mt-6 space-y-5 text-base leading-relaxed text-ivory-100/70">
               <p>
-               It started with a simple thought — jewellery shouldn't have to wait for an occasion.
-We wanted to create pieces that feel effortless, expressive, and easy to make your own. Jewellery you could wear with your everyday look, style for a night out, or pair with something special.
-              </p>
-              <p>
-                Not too precious to wear.<br/> 
-Not too ordinary to notice.<br/><br/> Just pieces that add something to you.
-
-That thought became GemWale — a gemstone jewellery brand built around everyday expression, personal style, and the freedom to wear what feels right.
-
-Because there doesn't always need to be a reason.
+               I grew up watching gemstone jewellery being made and seeing the world of gemstones up close through the wholesale market. As a child, I often wondered, “Who wears these? Where do these actually come into use?” At that time, gemstones felt like something very traditional—something you would probably see with a saree, an ethnic outfit, or perhaps in a very old-fashioned style of dressing.
+<br />  <br />
+But as I grew older, my perspective slowly changed.
+<br />  <br />
+I began to notice how unique gemstones really are—their natural colours, textures, imperfections and the way every stone has its own character. They looked different from ordinary artificial or antique jewellery. And gradually, I realised that gemstones don't have to be limited to traditions or special occasions. They can be beautiful fashion pieces too. They can be styled with a saree, a dress, jeans, a simple kurta—or even your everyday look.
+           <br />  <br /> That realisation is where GemWale began.
+<br />  <br />
+I started wearing and styling gemstone jewellery myself, experimenting with different stones, colours and designs, and discovering how effortlessly they could become a part of everyday fashion. What once seemed old and traditional started feeling fresh, personal and timeless.
+<br />  <br />
+GemWale is our way of bringing that feeling to you.
+<br />  <br />
+From natural and semi-precious stones to precious stones, glass stones, astrology stones, necklaces, rings, bracelets and even little everyday pieces like keychains, we want to create something for everyone and every age. Some pieces are about fashion, some carry meaning, some are simply beautiful—and some may hold a little bit of all three.
+<br />  <br />
+Most importantly, we believe in keeping it real. We want you to know what you are wearing and appreciate the stone for what it truly is. No unnecessary claims, no pretending, and no trying to make gemstones something they are not.
+<br />  <br />
+Because for us, gemstones are not just jewellery.
+<br />  <br />
+They are little pieces of nature, individuality and stories—made to be worn, styled and enjoyed in your own way.
+<br />  <br />
+Welcome to GemWale — where gemstones meet everyday style.
+             
               </p>
               <p className="font-extrabold">
                 For plans, no plans & everything in between.
@@ -63,7 +74,7 @@ Because there doesn't always need to be a reason.
       </section>
 
       {/* Chapter two */}
-      <section className="relative overflow-hidden border-b border-gold-400/10 bg-burgundy-950 py-24">
+      {/* <section className="relative overflow-hidden border-b border-gold-400/10 bg-burgundy-950 py-24">
         <FloatingMotif className="right-10 top-10 h-28 w-28 opacity-15" delay={0}>
           <PeacockCurve className="h-full w-full" />
         </FloatingMotif>
@@ -94,7 +105,7 @@ No age limit. No style limit. No occasion limit. Just jewellery that matches you
             </div>
           </SectionReveal>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA */}
       <section className="py-24 text-center">

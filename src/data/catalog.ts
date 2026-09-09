@@ -172,7 +172,7 @@ export const products: Product[] = [
       is_bestseller: true,
       is_limited_edition: true,
     },
-    ['Green'],
+    ['Deep Emerald'],
     [TripleDripJadeNecklace, TripleDripJadeNecklace2]
   ),
 
@@ -186,7 +186,7 @@ export const products: Product[] = [
       is_featured: true,
       is_bestseller: true,
     },
-    ['Green'],
+    ['Deep Emerald'],
     [DoubleDripJadeNecklace]
   ),
 
@@ -199,7 +199,7 @@ export const products: Product[] = [
       description: 'A graceful double-layer pink agate beaded necklace with a soft polished finish that transitions easily from everyday styling to festive looks.',
       is_bestseller: true,
     },
-    ['Pink'],
+    ['Blush Pink'],
     [DoublePlainAgateDriftNecklace, DoublePlainAgateDriftNecklace2]
   ),
 
@@ -219,7 +219,7 @@ export const products: Product[] = [
       is_bestseller: true,
       is_trending: true,
     },
-    ['Pink', 'Iridescent'],
+    ['Rose Aura', 'Opal Aura', 'Golden Aura', 'Ocean Aura'],
     [MysticAuraNecklace, MysticAuraNecklace2]
   ),
 
@@ -233,7 +233,7 @@ export const products: Product[] = [
       is_new_arrival: true,
       is_trending: true,
     },
-    ['Colourful'],
+    ['Mocha Swirl', 'Ocean blue', 'Green Swirl', 'Peach Swirl'],
     [ConfettiAgateNecklace, ConfettiAgateNecklace2]
   ),
 
@@ -246,7 +246,7 @@ export const products: Product[] = [
       description: 'Smooth organic-shaped pink agate-style beads give this necklace an earthy, polished character that works effortlessly from daywear to festive styling.',
       is_featured: true,
     },
-    ['Pink'],
+    ['Tumble Pink'],
     [RiverstoneAgateNecklace, RiverstoneAgateNecklace2]
   ),
 
@@ -260,7 +260,7 @@ export const products: Product[] = [
       is_featured: true,
       is_bestseller: true,
     },
-    ['Pink'],
+    ['Blush Rose'],
     [BlushRoseQuartzNecklace, BlushRoseQuartzNecklace2]
   ),
 
@@ -274,7 +274,7 @@ export const products: Product[] = [
       is_featured: true,
       is_trending: true,
     },
-    ['Green'],
+    ['Green Aventurine'],
     [PrismAventurineNecklace, PrismAventurineNecklace2]
   ),
 
@@ -288,7 +288,7 @@ export const products: Product[] = [
       is_bestseller: true,
       is_trending: true,
     },
-    ['Red'],
+    ['Carnelian Red'],
     [HeartCarnelianNecklace, HeartCarnelianNecklace2]
   ),
 
@@ -303,7 +303,7 @@ export const products: Product[] = [
       description: 'Warm red beads paired with a faceted teardrop centerpiece give this necklace a distinctive yet wearable statement character.',
       is_new_arrival: true,
     },
-    ['Red'],
+    ['Carnelian Red'],
     [DropletCarnelianNecklace, DropletCarnelianNecklace2]
   ),
 
@@ -317,7 +317,7 @@ export const products: Product[] = [
       is_featured: true,
       is_limited_edition: true,
     },
-    ['White', 'Pearl'],
+    ['Lustrous White'],
     [LustrousMotherOfPearlSquareNecklace, LustrousMotherOfPearlSquareNecklace2]
   ),
 
@@ -334,7 +334,7 @@ export const products: Product[] = [
       is_bestseller: true,
       is_limited_edition: true,
     },
-    ['Crimson', 'Red'],
+    ['Hot Pink'],
     [CrimsonCascadeJadeNecklace]
   ),
 
@@ -347,7 +347,7 @@ export const products: Product[] = [
       description: 'A patterned oval centerpiece surrounded by vibrant green beaded accents creates an earthy statement necklace with distinctive character.',
       is_featured: true,
     },
-    ['Green'],
+    ['Verdant Green', 'Amber Honey Orange', 'Wooden Jasper', 'Rose Quartz', 'Milky White', 'Deep Amethyst', 'White Howlite', 'Charcoal Grey', 'Green Aventurine', 'Pale Green'],
     [OvalPendantNecklace, OvalPendantNecklace2, OvalPendantNecklace3, OvalPendantNecklace4, OvalPendantNecklace5]
   ),
 
@@ -361,7 +361,7 @@ export const products: Product[] = [
       is_bestseller: true,
       is_trending: true,
     },
-    ['Purple', 'Violet'],
+    ['Smoky Amethyst'],
     [MysticAmethystNecklace, MysticAmethystNecklace2]
   ),
 
@@ -375,7 +375,7 @@ export const products: Product[] = [
     is_featured: true,
     is_new_arrival: true,
   },
-  ['Pink', 'Rose'],
+  ['Rose Quartz'],
   [RoseQuartzClusterStatementNecklace, RoseQuartzClusterStatementNecklace2]
 ),
 
@@ -389,7 +389,7 @@ P(
     is_featured: true,
     is_limited_edition: true,
   },
-  ['Turquoise', 'Earth Tone', 'Blue'],
+  ['Ocean Blue'],
   [RawOceanAgateSlicesNecklace]
 ),
 
@@ -403,7 +403,7 @@ P(
     is_bestseller: true,
     is_trending: true,
   },
-  ['Brown', 'Caramel', 'Cream'],
+  ['Brown Tiger\'s Eye'],
   [TigersEyeBandedAgateBeadNecklace]
 ),
 
@@ -417,7 +417,7 @@ P(
     is_new_arrival: true,
     is_trending: true,
   },
-  ['Orange', 'Terracotta'],
+  ['Carnelian Red'],
   [WarmCarnelianSingleStrandNecklace]
 ),
 
@@ -432,7 +432,7 @@ P(
     is_bestseller: true,
     is_limited_edition: true,
   },
-  ['Deep Red', 'Wine', 'Garnet'],
+  ['Crimson Red'],
   [DeepGarnetMultiStrandNecklace]
 ),
 
@@ -447,7 +447,7 @@ P(
       description: 'A polished blue crystal-point pendant suspended from a simple cord, bringing a clean geometric edge to everyday styling.',
       is_bestseller: true,
     },
-    ['Blue'],
+    ['Celestine Blue', 'Hot Pink', 'Deep Garnet', 'Off White', 'Deep Purple', 'Charcoal Black', 'Rose Pink', 'Opalite Sky Blue', 'Millefiori Multi Color', 'Clear Quartz', 'Soft Pink', 'White Howlite', 'Deep Amethyst'],
     [SereneCrystalPointNecklace, SereneCrystalPointNecklace1, SereneCrystalPointNecklace2, SereneCrystalPointNecklace3, SereneCrystalPointNecklace4]
   ),
 
@@ -461,7 +461,7 @@ P(
       is_featured: true,
       is_trending: true,
     },
-    ['Turquoise', 'Blue'],
+    ['Aqua Blue Veined'],
     [BohoTurquoiseDropNecklace]
   ),
 
@@ -475,7 +475,7 @@ P(
       is_bestseller: true,
       is_trending: true,
     },
-    ['Clear', 'White'],
+    ['Clear Quartz'],
     [ClearQuartzArrowheadPendant]
   ),
 
@@ -489,7 +489,7 @@ P(
       is_new_arrival: true,
       is_trending: true,
     },
-    ['Blue'],
+    ['Soft Blue', 'Soft Rose Pink', 'Milky White', 'Olive Green', 'Plump Purple', 'Celestine Blue', 'Mottled Royal Blue', 'Off White', 'Midnight Blue'],
     [BlueChalgeonyCrystalApplePendant, BlueChalGeonyCrystalApplePendant2, BlueChalGeonyCrystalApplePendant3]
   ),
 
@@ -518,7 +518,7 @@ P(
       is_new_arrival: true,
       is_trending: true,
     },
-    ['Multi'],
+    ['Cobalt Blue', 'Beige Mookaite Jasper', 'Pink & White Brecciated', 'Brown Tiger\'s Eye', 'Aqua Blue Veined', 'Mottled Royal Blue', 'Mint Green', 'Moss Green with White', 'Dalmatian Jasper', 'Grey Banded', 'Turquoise Veined', 'Midnight Blue', 'Grey Speckled', 'Clear Quartz'],
     [CelestialStarCrystalPendants, CelestialStarCrystalPendants2, CelestialStarCrystalPendants3, CelestialStarCrystalPendants4]
   ),
 
@@ -533,7 +533,7 @@ P(
       is_new_arrival: true,
       is_trending: true,
     },
-    ['Amber', 'Gold'],
+    ['Amber Honey'],
     [AmberHoneyDonutRingNecklace, AmberHoneyDonutRingNecklace2]
   ),
 
@@ -547,7 +547,7 @@ P(
       is_featured: true,
       is_trending: true,
     },
-    ['Blue', 'Cobalt'],
+    ['Cobalt Blue'],
     [CobaltBluePatteredBeadChoker, CobaltBluePatteredBeadChoker2]
   ),
 
@@ -560,7 +560,7 @@ P(
       description: 'A warm earthtone choker featuring smooth tube-shaped agate beads, bringing an organic and refined finish to everyday and festive looks.',
       is_new_arrival: true,
     },
-    ['Beige', 'Brown', 'Tan'],
+    ['Earthtone'],
     [EarthtonAgateTubeChoker]
   ),
 
@@ -574,7 +574,7 @@ P(
       is_featured: true,
       is_limited_edition: true,
     },
-    ['Sky Blue', 'Turquoise'],
+    ['Turquoise Blue'],
     [SkyBlueTurquoiseCrossNecklace, SkyBlueTurquoiseCrossNecklace2]
   ),
 
@@ -588,7 +588,7 @@ P(
       is_new_arrival: true,
       is_trending: true,
     },
-    ['Orange', 'Pink', 'Sunset', 'Iridescent'],
+    ['Autumn Blush', 'Honey Ochre Brown', 'Multi Tourmaline Mix', 'Deep Teal Blue', 'Olive Green', 'Ruby Pink', 'Smoky Green', 'Honey Orange', 'Emerald Green', 'Amber Yellow', 'Soft Rose', 'Fluorite Blue'],
     [SunsetKorianQuartzNecklace, SunsetKorianQuartzNecklace2, SunsetKorianQuartzNecklace3, SunsetKorianQuartzNecklace4, SunsetKorianQuartzNecklace5]
   ),
 
@@ -596,34 +596,34 @@ P(
   P(
     'Blush Strawberry Quartz Bead Bracelet',
     'GW-B001',
-    499,
+    299,
     'bracelets',
     {
       description: 'A delicate blush-pink bracelet featuring polished strawberry quartz beads, designed as a versatile piece for everyday wear and layering.',
       is_new_arrival: true,
       is_trending: true,
     },
-    ['Blush Pink', 'Rose'],
+    ['Blush Pink'],
     [BlushStrawberryQuartzBeadBracelet]
   ),
 
   P(
     'Milky Yellow Jade Bracelet',
     'GW-B002',
-    549,
+    299,
     'bracelets',
     {
       description: 'A warm milky-yellow jade bracelet with smooth polished beads, bringing a soft luminous tone to wrist wear and stacking looks.',
       is_featured: true,
     },
-    ['Yellow', 'Golden'],
+    ['Yellow'],
     [MilkyYellowJadeBracelet]
   ),
 
   P(
     'Multi-Gemstone Beaded Bracelet',
     'GW-B003',
-    599,
+    349,
     'bracelets',
     {
       description: 'A vibrant multi-coloured bracelet featuring assorted gemstone beads, designed as a playful statement piece for everyday wear and self-expression.',
@@ -631,46 +631,46 @@ P(
       is_new_arrival: true,
       is_trending: true,
     },
-    ['Multi', 'Colourful'],
+    ['Multi'],
     [MultiGemstoneBeadedBracelet]
   ),
 
   P(
     'Raw Rose Quartz Nugget Bracelet',
     'GW-B004',
-    449,
+    399,
     'bracelets',
     {
       description: 'A natural raw rose quartz bracelet featuring organic nugget-shaped stones, bringing an earthy and unpolished character to everyday styling.',
       is_new_arrival: true,
     },
-    ['Pink', 'Rose'],
+    ['Rose Quartz'],
     [RawRoseQuartzNuggetBracelet]
   ),
 
   P(
     'Sunset Cracked Agate Oval Bead Bracelet',
     'GW-B005',
-    499,
+    349,
     'bracelets',
     {
       description: 'A warm sunset-toned bracelet featuring cracked agate oval beads, bringing organic texture and colour to wrist wear and layered looks.',
       is_trending: true,
     },
-    ['Orange', 'Pink', 'Peach'],
+    ['Autumn Blush'],
     [SunsetCrackedAgateOvalBeadBracelet]
   ),
 
   P(
     'Teal & Brown Veined Agate Bracelet',
     'GW-B006',
-    549,
+    299,
     'bracelets',
     {
       description: 'An earthy bracelet featuring veined agate beads in teal and brown tones, combining natural patterns with a grounded colour palette for everyday wear.',
       is_featured: true,
     },
-    ['Teal', 'Brown', 'Earth Tone'],
+    ['Teal'],
     [TealBrownVeinedAgateBracelet]
   ),
 

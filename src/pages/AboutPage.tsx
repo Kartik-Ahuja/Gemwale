@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Gem, Sparkles, Heart, Globe } from 'lucide-react';
 import { PageHero } from '@/components/PageHero';
 import { SectionReveal, OrnamentalDivider, FloatingMotif, JharokhaArch, JaaliPattern } from '@/components/Ornaments';
+import About from '../images/About.webp'
+import OurStoryHero from '../images/OurStory/OurStoryHero.png';
 
 export function AboutPage() {
   return (
@@ -9,9 +11,9 @@ export function AboutPage() {
       <PageHero
         eyebrow="Our Story"
         title="About GemWale"
-        bilingual="गेमवाले के बारे में"
+        bilingual="जेमवाले के बारे में"
         description="Premium gemstone jewellery with an Indian Rajasthani soul — made for every age, every style, every occasion."
-        // image="https://images.pexels.com/photos/1454113009175-9a4b1c3de9a4/pexels-photo-1454113009175-9a4b1c3de9a4.jpeg?auto=compress&cs=tinysrgb&w=1600"
+        image={OurStoryHero}
       />
 
       {/* Brand idea */}
@@ -74,18 +76,36 @@ export function AboutPage() {
             </h2>
             <OrnamentalDivider className="mt-5 justify-start" />
             <p className="mt-5 text-base leading-relaxed text-ivory-100/70">
-              Every GemWale piece is hand-finished with ethically sourced gemstones, resin, and glass
-              stones. Our anti-tarnish finish and hypoallergenic settings mean your jewellery stays
-              beautiful — wear after wear.
+
+GemWale started with something I had been seeing since childhood.
+  <br />  <br />
+I grew up watching gemstone jewellery being made and experiencing the world of gemstones up close through the wholesale market. As a child, I often wondered, “Who wears these? Where do these actually come into use?” At that time, gemstones felt like something very traditional—something you would probably see with a saree, an ethnic outfit, or perhaps in a very old-fashioned style of dressing.
+  <br />  <br />
+But as I grew older, my perspective slowly changed.
+  <br />  <br />
+I began to notice how unique gemstones really are—their natural colours, textures, imperfections and the way every stone has its own character. Unique jewelry and stone jewelry felt different from ordinary artificial or antique jewellery. Gradually, I realised that precious stone jewelry and natural gemstone jewellery don't have to be limited to traditions or special occasions. They can be beautiful fashion pieces too. They can be styled with a saree, a dress, jeans, a simple kurta—or even your everyday look.
+  <br />  <br />
+That realisation is where GemWale began.
+  <br />  <br />
+I started wearing and styling gemstone jewellery myself, experimenting with different stones, colours and designs, and discovering how effortlessly they could become a part of everyday fashion. What once seemed old and traditional started feeling fresh, personal and timeless.
+  <br />  <br />
+GemWale is our way of bringing that feeling to you.
+  <br />  <br />
+From natural and semi-precious stones to precious stones, glass stones, astrology stones, gemstone necklaces, rings, bracelets and even little everyday pieces like keychains, we want to create something for everyone and every age. Some pieces are about fashion, some carry meaning, some are simply beautiful—and some may hold a little bit of all three.
+  <br />  <br />
+Most importantly, we believe in keeping it real. We want you to know what you are wearing and appreciate the stone for what it truly is. No unnecessary claims, no pretending, and no trying to make gemstones something they are not.
+  <br />  <br />
+Because for us, gemstones are not just jewellery.
+  <br />  <br />
+They are little pieces of nature, individuality and stories—made to be worn, styled and enjoyed in your own way.
+  <br />  <br />
+Welcome to GemWale — where gemstones meet everyday style.
             </p>
-            <p className="mt-4 text-base leading-relaxed text-ivory-100/70">
-              We draw from the jharokhas of Jaipur, the jaali of Jaisalmer, and the mandana of
-              Marwar — reimagined for a contemporary world. Subtle. Luxurious. Artistic.
-            </p>
+           
           </SectionReveal>
           <SectionReveal delay={0.15}>
             <div className="relative aspect-[4/5] overflow-hidden bg-burgundy-800">
-              <img src="https://images.pexels.com/photos/1616406/pexels-photo-1616406.jpeg?auto=compress&cs=tinysrgb&w=900" alt="GemWale craft" className="h-full w-full object-cover" />
+              <img src={About} alt="GemWale jewellery" className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-burgundy-950/20" />
             </div>
           </SectionReveal>

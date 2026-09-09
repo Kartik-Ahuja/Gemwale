@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Check, Heart, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, Check, Heart, Minus, Plus, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { WHATSAPP_NUMBER } from '@/lib/firebase';
 import { getProductBySlug, getProducts } from '@/lib/productStore';
@@ -18,7 +18,7 @@ export function ProductDetailPage() {
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [activeImg, setActiveImg] = useState(0);
   const [colour, setColour] = useState('');
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [tab, setTab] = useState<'description' | 'care'>('description');
 
   useEffect(() => {
@@ -85,6 +85,24 @@ export function ProductDetailPage() {
                   Limited Edition
                 </span>
               )}
+              
+              {/* Left Arrow */}
+              <button
+                onClick={() => setActiveImg((i) => (i - 1 + product.images.length) % product.images.length)}
+                className="absolute left-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-gold-400/20 text-gold-300 transition-all hover:bg-gold-400/40 backdrop-blur-sm border border-gold-400/30"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+
+              {/* Right Arrow */}
+              <button
+                onClick={() => setActiveImg((i) => (i + 1) % product.images.length)}
+                className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-gold-400/20 text-gold-300 transition-all hover:bg-gold-400/40 backdrop-blur-sm border border-gold-400/30"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
             </motion.div>
             <div className="mt-4 flex gap-3">
               {product.images.map((src, i) => (
@@ -142,7 +160,7 @@ export function ProductDetailPage() {
             <div className="mb-6">
               <p className="mb-3 text-[10px] uppercase tracking-[0.3em] text-gold-400">Quantity</p>
               <div className="flex items-center border border-ivory-100/20 w-fit">
-                <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="grid h-10 w-10 place-items-center text-ivory-100/70 hover:text-gold-300" aria-label="Decrease">
+                <button onClick={() => setQuantity((q) => Math.max(0, q - 1))} className="grid h-10 w-10 place-items-center text-ivory-100/70 hover:text-gold-300" aria-label="Decrease">
                   <Minus className="h-4 w-4" />
                 </button>
                 <span className="w-12 text-center text-ivory-100">{quantity}</span>
