@@ -12,6 +12,29 @@ import type { Product } from '@/types';
 import MainHero from '../images/hero section/main-hero.webp';
 import demo1 from '../images/demo.jpg';
 import demo2 from '../images/demo2.jpeg';
+import { Helmet } from 'react-helmet-async';
+
+export default function Home() {
+  return (
+    <>
+      <Helmet>
+        <title>GemWale | Fashion Jewellery That Matches Your Vibe</title>
+
+        <meta
+          name="description"
+          content="Discover stylish fashion jewellery by GemWale, designed for everyday looks, festive moments and everything in between. Shop necklaces, bracelets and more."
+        />
+
+        <meta
+          name="keywords"
+          content="GemWale, fashion jewellery, trendy jewellery, jewellery for women, necklaces, bracelets, earrings, gemstone jewellery, stylish jewellery, online jewellery store"
+        />
+      </Helmet>
+
+      {/* Home page content */}
+    </>
+  );
+}
 
 const lifestyleScenes = [
   { label: 'Café', img: demo1 },
@@ -26,10 +49,36 @@ const lifestyleScenes = [
 ];
 
 const testimonials = [
-  { name: 'Ananya R.', text: 'I wore the Mehr Strand to a café and then to a wedding the same week. It just works everywhere.', role: 'Mumbai' },
-  { name: 'Kavya S.', text: 'The quality is unreal for the price. My Jaali cuff has become my everyday signature.', role: 'Bengaluru' },
-  { name: 'Rohan M.', text: 'Finally a unisex jewellery brand that doesn’t feel forced. The Rajwada Kada is clean and bold.', role: 'Delhi' },
-  { name: 'Meera J.', text: 'I gifted my mother a Surya pendant and kept the matching earrings. No age limit, truly.', role: 'Jaipur' },
+  {
+    name: 'Aarushi M.',
+    text: 'The necklace looks even better in person. It feels stylish, elegant, and goes perfectly with both Indian and western outfits.',
+    role: 'Jaipur'
+  },
+  {
+    name: 'Riya S.',
+    text: 'I love how unique the designs feel. My GemWale necklace has quickly become one of those pieces I reach for all the time.',
+    role: 'Delhi'
+  },
+  {
+    name: 'Mehak J.',
+    text: 'I wore my GemWale necklace with a simple outfit and it completely elevated the look. Such an effortless statement piece.',
+    role: 'Mumbai'
+  },
+  {
+    name: 'Ishita K.',
+    text: 'The packaging was beautiful and the jewellery felt really special. It also makes such a lovely gifting option.',
+    role: 'Bengaluru'
+  },
+  {
+    name: 'Naina P.',
+    text: 'What I like most is how easy the jewellery is to style. It works beautifully for everyday looks as well as festive occasions.',
+    role: 'Pune'
+  },
+  {
+    name: 'Tanya B.',
+    text: 'Beautiful designs, good finishing, and very easy to style. GemWale has exactly the modern jewellery vibe I was looking for.',
+    role: 'Jaipur'
+  }
 ];
 
 // Removed static instagramPosts - now fetched from API
@@ -119,7 +168,7 @@ export function HomePage() {
             transition={{ duration: 1.1, delay: 0.5 }}
             className="font-display text-4xl leading-[1.05] text-ivory-100 text-shadow-lux sm:text-6xl lg:text-7xl xl:text-8xl"
           >
-            ज्वेलरी  That
+          <span className="gold-text-gradient">ज्वेलरी</span>    That
             <br />
             Matches Your <span className="gold-text-gradient">Vibe.</span>
           </motion.h1>
@@ -202,7 +251,7 @@ export function HomePage() {
             </p>
           </SectionReveal>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 ">
+          <div className="grid grid-cols-3 gap-4 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 ">
             {categories.map((cat, i) => (
               <SectionReveal key={cat.id} delay={i * 0.05}>
                 <Link to={`/category/${cat.slug}`} className="group block">
@@ -225,8 +274,21 @@ export function HomePage() {
       {/* <SectionBlock eyebrow="New Arrivals" bilingual="New अराइवल्स" subtitle="Fresh pieces. New vibes." products={newArrivals} cta="See मोर" ctaLink="/collections/new-arrivals" carousel /> */}
 
       {/* BEST SELLERS */}
-      <SectionBlock eyebrow="Best Sellers" bilingual="Best सेलर्स" subtitle="The pieces our community keeps coming back for." products={bestSellers} cta="Shop ऑल" ctaLink="/collections/best-sellers" carousel dark />
-
+      {/* <SectionBlock eyebrow="Best Sellers" bilingual="Best सेलर्स" subtitle="The pieces our community keeps coming back for." products={bestSellers} cta="Shop ऑल" ctaLink="/collections/best-sellers" carousel dark /> */}
+<SectionBlock
+  eyebrow="Best Sellers"
+  bilingual={
+    <>
+      Best <span className="gold-text-gradient">सेलर्स</span>
+    </>
+  }
+  subtitle="The pieces our community keeps coming back for."
+  products={bestSellers}
+  cta="Shop All"
+  ctaLink="/collections/best-sellers"
+  carousel
+  dark
+/>
       {/* LIFESTYLE */}
       {/* <section className="border-b border-gold-400/10 py-20">
         <div className="container-editorial mb-10 text-center">
@@ -253,8 +315,20 @@ export function HomePage() {
       </section> */}
 
       {/* TRENDING */}
-      <SectionBlock  eyebrow="Trending" bilingual="Trending नाउ" subtitle="What the world is wearing right now." products={trending} cta="See मोर" ctaLink="/collections/trending" carousel />
-
+      {/* <SectionBlock  eyebrow="Trending" bilingual="Trending नाउ" subtitle="What the world is wearing right now." products={trending} cta="See मोर" ctaLink="/collections/trending" carousel /> */}
+<SectionBlock
+  eyebrow="Trending"
+  bilingual={
+    <>
+      Trending <span className="gold-text-gradient">नाउ</span>
+    </>
+  }
+  subtitle="What the world is wearing right now."
+  products={trending}
+  cta="See More"
+  ctaLink="/collections/trending"
+  carousel
+/>
       {/* FEATURED EDIT */}
       {/* <section className="relative overflow-hidden border-b border-gold-400/10 bg-burgundy-950 py-24">
         <div className="bg-jaali absolute inset-0 opacity-30" />
@@ -391,8 +465,20 @@ export function HomePage() {
       </section>
 
       {/* TOP PICKS */}
-      <SectionBlock eyebrow="Atelier Favourites" bilingual="Top पिक्स" subtitle="Our most-loved selections." products={topPicks} cta="See मोर" ctaLink="/collections/top-picks" carousel />
-
+      {/* <SectionBlock eyebrow="Atelier Favourites" bilingual="Top पिक्स" subtitle="Our most-loved selections." products={topPicks} cta="See मोर" ctaLink="/collections/top-picks" carousel /> */}
+<SectionBlock
+  eyebrow="Atelier Favourites"
+  bilingual={
+    <>
+      Top <span className="gold-text-gradient">पिक्स</span>
+    </>
+  }
+  subtitle="Our most-loved selections."
+  products={topPicks}
+  cta="See More"
+  ctaLink="/collections/top-picks"
+  carousel
+/>
       {/* UNISEX */}
       {/* <section className="relative overflow-hidden border-b border-gold-400/10 bg-burgundy-950 py-24">
         <div className="bg-mandana absolute inset-0 opacity-40" />
@@ -566,16 +652,16 @@ function SectionBlock({
   ctaLink,
   carousel,
   dark,
-}: {
-  eyebrow: string;
-  bilingual: string;
-  subtitle: string;
-  products: Product[];
-  cta: string;
-  ctaLink: string;
-  carousel?: boolean;
-  dark?: boolean;
-}) {
+  }: {
+    eyebrow: string;
+  bilingual: React.ReactNode;
+    subtitle: string;
+    products: Product[];
+    cta: string;
+    ctaLink: string;
+    carousel?: boolean;
+    dark?: boolean;
+  }) {
   return (
     <section className={`border-b border-gold-400/10 py-20 ${dark ? 'bg-burgundy-950' : ''}`}>
       <div className="container-editorial">

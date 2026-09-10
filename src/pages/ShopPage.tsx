@@ -9,6 +9,32 @@ import { SectionReveal } from '@/components/Ornaments';
 import { getProducts } from '@/lib/productStore';
 import type { Product } from '@/types';
 
+import { Helmet } from 'react-helmet-async';
+
+export default function Shop() {
+  return (
+    <>
+      <Helmet>
+        <title>
+          Shop Jewellery Online | Necklaces, Bracelets & More | GemWale
+        </title>
+
+        <meta
+          name="description"
+          content="Shop GemWale’s collection of stylish necklaces, bracelets, pendants and fashion jewellery. Discover versatile pieces made to match every mood and occasion."
+        />
+
+        <meta
+          name="keywords"
+          content="shop jewellery online, fashion jewellery online, necklaces online, bracelets online, pendants, gemstone jewellery, trendy jewellery, women jewellery, GemWale shop"
+        />
+      </Helmet>
+
+      {/* Shop page content */}
+    </>
+  );
+}
+
 type SortKey = 'newest' | 'price-asc' | 'price-desc' | 'bestsellers' | 'trending';
 
 export function ShopPage() {
@@ -19,7 +45,7 @@ export function ShopPage() {
   const [selectedCats, setSelectedCats] = useState<string[]>(params.get('category') ? [params.get('category')!] : []);
   const [selectedColours, setSelectedColours] = useState<string[]>([]);
   // FIX 1: Increased max price range from 6,000 to 1,00,000
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]); 
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]); 
   const [sort, setSort] = useState<SortKey>('newest');
   const [showFilters, setShowFilters] = useState(false);
   const [visible, setVisible] = useState(12);
@@ -84,7 +110,7 @@ export function ShopPage() {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         <h3 className="mb-3 text-[10px] uppercase tracking-[0.3em] text-gold-400">Colour</h3>
         <div className="flex flex-wrap gap-2">
           {allColours.map((c) => (
@@ -101,7 +127,7 @@ export function ShopPage() {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <div>
         <h3 className="mb-3 text-[10px] uppercase tracking-[0.3em] text-gold-400">Price Range</h3>
@@ -110,14 +136,15 @@ export function ShopPage() {
           <span>₹{priceRange[1].toLocaleString('en-IN')}</span>
         </div>
         <input
-          type="range"
-          min={0}
-          max={100000} // FIX 1 continued: Updated slider max to match state
-          step={100}
-          value={priceRange[1]}
-          onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-          className="mt-2 w-full accent-gold-400"
-        />
+  type="range"
+  min="0"
+  max="10000"
+  value={priceRange[1]}
+  onChange={(e) =>
+    setPriceRange([priceRange[0], Number(e.target.value)])
+  }
+  className="mt-2 w-full cursor-pointer accent-yellow-500"
+/>
       </div>
     </div>
   );
@@ -142,8 +169,8 @@ export function ShopPage() {
               <SlidersHorizontal className="h-4 w-4" /> Filters
             </button>
             <p className="text-sm text-ivory-100/60">{filtered.length} pieces</p>
-            <div className="flex items-center gap-3">
-              <label className="text-[10px] uppercase tracking-widest text-ivory-100/50">Sort</label>
+            <div className="flex items-center gap-3 overflow-hidden">
+              <label className="text-[10px] uppercase tracking-widest text-ivory-100/50 ">Sort</label>
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as SortKey)}
@@ -170,7 +197,7 @@ export function ShopPage() {
                 <div className="py-20 text-center">
                   <p className="font-serif text-xl text-ivory-100/70">No pieces match your filters.</p>
                   <button
-                    onClick={() => { setSelectedCats([]); setSelectedColours([]); setPriceRange([0, 100000]); }}
+                    onClick={() => { setSelectedCats([]); setSelectedColours([]); setPriceRange([0, 10000]); }}
                     className="btn-gold mt-4"
                   >
                     Clear Filters

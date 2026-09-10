@@ -10,7 +10,7 @@ const shopLinks = [
   { label: 'Pendants', to: '/category/pendants' },
   { label: 'Bracelets', to: '/category/bracelets' },
   // { label: 'Rings', to: '/category/rings' },
-  { label: 'Malas', to: '/category/malas' },
+  // { label: 'Malas', to: '/category/malas' },
   { label: 'Earrings', to: '/category/earrings' },
   { label: 'Keychains', to: '/category/keychains' },
 ];

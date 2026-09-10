@@ -97,7 +97,7 @@ export const categories: Category[] = [
   { id: 'cat-pendants', name: 'Pendants', slug: 'pendants', description: 'Solitary gemstones set to rest against your skin.', image_url: PendantsCover, display_order: 2 },
   { id: 'cat-bracelets', name: 'Bracelets', slug: 'bracelets', description: 'Wrist pieces made for everyday wear and every vibe.', image_url: BraceletsCover, display_order: 3 },
   // { id: 'cat-rings', name: 'Rings', slug: 'rings', description: 'Bold rings and stacking bands with a gemstone heart.', image_url: categoryCoverImage, display_order: 4 },
-  { id: 'cat-malas', name: 'Malas', slug: 'malas', description: 'Hand-strung gemstone malas for intention and adornment.', image_url: MalasCover  , display_order: 5 },
+  // { id: 'cat-malas', name: 'Malas', slug: 'malas', description: 'Hand-strung gemstone malas for intention and adornment.', image_url: MalasCover  , display_order: 5 },
   { id: 'cat-earrings', name: 'Earrings', slug: 'earrings', description: 'From subtle studs to sculptural drops.', image_url: Earringscover, display_order: 6 },
   { id: 'cat-keychains', name: 'Keychains', slug: 'keychains', description: 'Gemstone keychains — small pieces, big energy.', image_url: KeychainsCover, display_order: 7 },
 ];
