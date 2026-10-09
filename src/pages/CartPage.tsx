@@ -68,31 +68,73 @@ export function CartPage() {
 
               {/* Summary */}
               <div className="lg:col-span-1">
-                <div className="sticky top-24 border border-gold-400/15 bg-burgundy-950/50 p-6">
-                  <h3 className="font-serif text-2xl text-ivory-100">Order Summary</h3>
-                  <OrnamentalDivider className="mt-4 justify-start" />
-                  <div className="mt-5 space-y-3 text-sm">
-                    <div className="flex justify-between text-ivory-100/70">
-                      <span>Items ({cartCount})</span>
-                      <span>₹{cartTotal.toLocaleString('en-IN')}</span>
-                    </div>
-                    <div className="flex justify-between text-ivory-100/70">
-                      <span>Shipping</span>
-                      <span className="text-gold-300">Calculated on WhatsApp</span>
-                    </div>
-                  </div>
-                  <div className="mt-5 flex items-center justify-between border-t border-ivory-100/10 pt-5">
-                    <span className="text-xs uppercase tracking-widest text-ivory-100/60">Total</span>
-                    <span className="font-serif text-3xl text-gold-300">₹{cartTotal.toLocaleString('en-IN')}</span>
-                  </div>
-                  <Link to="/customer-details" className="btn-gold-solid mt-6 w-full">
-                    Proceed to WhatsApp
-                  </Link>
-                  <Link to="/shop" className="btn-outline mt-3 w-full">
-                    Continue Shopping
-                  </Link>
-                </div>
-              </div>
+  <div className="sticky top-24 border border-gold-400/15 bg-burgundy-950/50 p-6">
+
+    <h3 className="font-serif text-2xl text-ivory-100">
+      Order Summary
+    </h3>
+
+    <OrnamentalDivider className="mt-4 justify-start" />
+
+    <div className="mt-5 space-y-3 text-sm">
+
+      <div className="flex justify-between text-ivory-100/70">
+        <span>Items ({cartCount})</span>
+        <span>₹{cartTotal.toLocaleString('en-IN')}</span>
+      </div>
+
+      <div className="flex justify-between gap-4 text-ivory-100/70">
+        <span>Shipping</span>
+
+        <span className="text-right text-gold-300">
+          {cartTotal > 499
+            ? 'Free Delivery'
+            : 'Calculated on WhatsApp'}
+        </span>
+      </div>
+
+      {cartTotal <= 499 && (
+        <p className="text-xs leading-relaxed text-ivory-100/50">
+          Add products worth ₹{(500 - cartTotal).toLocaleString('en-IN')} more to get free delivery.
+        </p>
+      )}
+
+      {cartTotal > 499 && (
+        <p className="text-xs text-gold-300/80">
+          Free delivery on orders above ₹499.
+        </p>
+      )}
+
+    </div>
+
+    <div className="mt-5 flex items-center justify-between border-t border-ivory-100/10 pt-5">
+
+      <span className="text-xs uppercase tracking-widest text-ivory-100/60">
+        Total
+      </span>
+
+      <span className="font-serif text-3xl text-gold-300">
+        ₹{cartTotal.toLocaleString('en-IN')}
+      </span>
+
+    </div>
+
+    <Link
+      to="/customer-details"
+      className="btn-gold-solid mt-6 w-full"
+    >
+      Proceed to WhatsApp
+    </Link>
+
+    <Link
+      to="/shop"
+      className="btn-outline mt-3 w-full"
+    >
+      Continue Shopping
+    </Link>
+
+  </div>
+</div>
             </div>
           )}
         </div>

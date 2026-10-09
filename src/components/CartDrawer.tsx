@@ -83,18 +83,39 @@ export function CartDrawer() {
                   ))}
                 </div>
 
-                <div className="border-t border-gold-400/15 px-5 py-5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs uppercase tracking-widest text-ivory-100/60">Total</span>
-                    <span className="font-serif text-2xl text-gold-300">₹{cartTotal.toLocaleString('en-IN')}</span>
-                  </div>
-                  <Link to="/cart" onClick={() => setCartOpen(false)} className="btn-outline mt-4 w-full">
-                    View Cart
-                  </Link>
-                  <Link to="/customer-details" onClick={() => setCartOpen(false)} className="btn-gold-solid mt-3 w-full">
-                    Proceed to WhatsApp
-                  </Link>
-                </div>
+           <div className="border-t border-gold-400/15 px-5 py-5">
+
+  <p className="mb-3 text-xs leading-relaxed text-ivory-100/60">
+    Free delivery on orders above ₹499. For orders below ₹499, shipping charges will apply and will be calculated on WhatsApp.
+  </p>
+
+  <div className="flex items-center justify-between">
+    <span className="text-xs uppercase tracking-widest text-ivory-100/60">
+      Total
+    </span>
+
+    <span className="font-serif text-2xl text-gold-300">
+      ₹{cartTotal.toLocaleString('en-IN')}
+    </span>
+  </div>
+
+  <Link
+    to="/cart"
+    onClick={() => setCartOpen(false)}
+    className="btn-outline mt-4 w-full"
+  >
+    View Cart
+  </Link>
+
+  <Link
+    to="/customer-details"
+    onClick={() => setCartOpen(false)}
+    className="btn-gold-solid mt-3 w-full"
+  >
+    Proceed to WhatsApp
+  </Link>
+
+</div>
               </>
             )}
           </motion.aside>

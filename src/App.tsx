@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { StoreProvider } from '@/context/StoreContext';
 import { Layout } from '@/components/Layout';
 import { HomePage } from '@/pages/HomePage';
@@ -19,10 +20,28 @@ import { FaqPage } from '@/pages/FaqPage';
 import { ShippingReturnsPage } from '@/pages/ShippingReturnsPage';
 import { AdminDashboard } from '@/pages/AdminDashboard';
 
+function MetaPixelTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const fbq = (window as any).fbq;
+
+    if (typeof fbq === 'function') {
+      fbq('track', 'PageView', {
+        page_path: location.pathname + location.search,
+        page_title: document.title,
+      });
+    }
+  }, [location.pathname, location.search]);
+
+  return null;
+}
+
 function App() {
   return (
     <StoreProvider>
       <BrowserRouter>
+        <MetaPixelTracker />
         <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
