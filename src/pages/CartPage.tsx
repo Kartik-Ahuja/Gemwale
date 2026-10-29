@@ -1,11 +1,30 @@
 import { Link } from 'react-router-dom';
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import { useStore } from '@/context/StoreContext';
 import { PageHero } from '@/components/PageHero';
 import { OrnamentalDivider } from '@/components/Ornaments';
 
 export function CartPage() {
-  const { cart, updateQuantity, removeFromCart, cartTotal, cartCount } = useStore();
+  const {
+    cart, updateQuantity, removeFromCart, cartTotal, cartCount,
+    couponCode, couponDiscount, checkoutTotal, applyCoupon, removeCoupon,
+  } = useStore();
+  const [couponInput, setCouponInput] = useState('');
+  const [couponMessage, setCouponMessage] = useState('');
+
+  const handleApplyCoupon = (event: React.FormEvent) => {
+    event.preventDefault();
+    const result = applyCoupon(couponInput);
+    setCouponMessage(
+      result === 'applied'
+        ? 'Coupon applied! You saved 10%.'
+        : result === 'minimum'
+          ? 'This coupon is valid on orders above ₹799.'
+          : 'Invalid coupon code.',
+    );
+    if (result === 'applied') setCouponInput('');
+  };
 
   return (
     <div>
@@ -93,6 +112,39 @@ export function CartPage() {
         </span>
       </div>
 
+      <div className="border-t border-ivory-100/10 pt-4">
+        <p className="mb-2 text-xs uppercase tracking-widest text-ivory-100/60">Have a coupon?</p>
+        {couponCode ? (
+          <div className="flex items-center justify-between gap-3 text-sm">
+            <span className="text-gold-300">{couponCode}</span>
+            <button type="button" onClick={() => { removeCoupon(); setCouponMessage(''); }} className="text-xs text-ivory-100/50 underline hover:text-ivory-100">
+              Remove
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleApplyCoupon} className="flex gap-2">
+            <input
+              aria-label="Coupon code"
+              value={couponInput}
+              onChange={(event) => setCouponInput(event.target.value)}
+              placeholder="Enter coupon code"
+              className="input-field min-w-0 flex-1 text-sm"
+            />
+            <button type="submit" className="btn-outline px-3 text-xs">Apply</button>
+          </form>
+        )}
+        {couponMessage && <p role="status" className="mt-2 text-xs text-gold-300/80">{couponMessage}</p>}
+        {!couponCode && <p className="mt-2 text-xs text-ivory-100/40">Use VIBECHECK10 for 10% off orders above ₹799.</p>}
+        {couponCode && cartTotal <= 799 && <p className="mt-2 text-xs text-ivory-100/50">Add items worth ₹{(800 - cartTotal).toLocaleString('en-IN')} more to use this coupon.</p>}
+      </div>
+
+      {couponDiscount > 0 && (
+        <div className="flex justify-between text-sm text-gold-300">
+          <span>Coupon discount (10%)</span>
+          <span>−₹{couponDiscount.toLocaleString('en-IN')}</span>
+        </div>
+      )}
+
       {cartTotal <= 499 && (
         <p className="text-xs leading-relaxed text-ivory-100/50">
           Add products worth ₹{(500 - cartTotal).toLocaleString('en-IN')} more to get free delivery.
@@ -114,7 +166,7 @@ export function CartPage() {
       </span>
 
       <span className="font-serif text-3xl text-gold-300">
-        ₹{cartTotal.toLocaleString('en-IN')}
+        ₹{checkoutTotal.toLocaleString('en-IN')}
       </span>
 
     </div>

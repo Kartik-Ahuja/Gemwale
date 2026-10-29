@@ -12,6 +12,11 @@ interface StoreContextValue {
   clearCart: () => void;
   cartCount: number;
   cartTotal: number;
+  couponCode: string;
+  couponDiscount: number;
+  checkoutTotal: number;
+  applyCoupon: (code: string) => 'applied' | 'invalid' | 'minimum';
+  removeCoupon: () => void;
   toggleWishlist: (productId: string) => void;
   isWishlisted: (productId: string) => boolean;
 }
@@ -20,6 +25,7 @@ const StoreContext = createContext<StoreContextValue | null>(null);
 
 const CART_KEY = 'gemwale_cart';
 const WISH_KEY = 'gemwale_wishlist';
+const COUPON_CODE = 'VIBECHECK10';
 
 function safeLoad<T>(key: string, fallback: T): T {
   try {
@@ -54,6 +60,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>(loadCart);
   const [wishlist, setWishlist] = useState<string[]>(loadWishlist);
   const [cartOpen, setCartOpen] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
 
   useEffect(() => {
     safeSave(CART_KEY, cart);
@@ -103,7 +110,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const clearCart = () => setCart([]);
+  const clearCart = () => {
+    setCart([]);
+    setCouponCode('');
+  };
+
+  const applyCoupon: StoreContextValue['applyCoupon'] = (code) => {
+    if (code.trim().toUpperCase() !== COUPON_CODE) return 'invalid';
+    if (cartTotal <= 799) return 'minimum';
+    setCouponCode(COUPON_CODE);
+    return 'applied';
+  };
+
+  const removeCoupon = () => setCouponCode('');
 
   const toggleWishlist: StoreContextValue['toggleWishlist'] = (productId) => {
     setWishlist((prev) =>
@@ -119,6 +138,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     () => cart.reduce((sum, i) => sum + i.price * i.quantity, 0),
     [cart],
   );
+  const couponDiscount = couponCode === COUPON_CODE && cartTotal > 799
+    ? Math.round(cartTotal * 0.1)
+    : 0;
+  const checkoutTotal = cartTotal - couponDiscount;
 
   const value: StoreContextValue = {
     cart,
@@ -131,6 +154,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     clearCart,
     cartCount,
     cartTotal,
+    couponCode,
+    couponDiscount,
+    checkoutTotal,
+    applyCoupon,
+    removeCoupon,
     toggleWishlist,
     isWishlisted,
   };

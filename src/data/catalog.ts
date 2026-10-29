@@ -26,8 +26,15 @@ import type { Category, Collection, Product } from '@/types';
   import LustrousMotherOfPearlSquareNecklace from '../images/ProductImages/Lustrous Mother of Pearl Square Necklace.webp';
   import CrimsonCascadeJadeNecklace from '../images/ProductImages/Crimson Cascade Jade Necklace.webp';
   import MysticAmethystNecklace from '../images/ProductImages/Mystic Amethyst Necklace.webp';
+  import MysticTripleStrandNecklace from '../images/ProductImages/Mystic Triple Strand Necklace.webp';
+  import MysticTripleStrandNecklace2 from '../images/ProductImages/Mystic Triple Strand Necklace 2.webp';
   import RoseQuartzClusterStatementNecklace from '../images/ProductImages/Rose Quartz Cluster Statement Necklace.webp';
   import RawOceanAgateSlicesNecklace from '../images/ProductImages/Raw Ocean Agate Slices Necklace.webp';
+  import RainbowSpectrumAgateNecklace from '../images/ProductImages/Rainbow Spectrum Agate Necklace.webp';
+  import AzureSeaTurquoiseBeadNecklace from '../images/ProductImages/Azure Sea Turquoise Bead Necklace.webp';
+  import NecklaceEarringsBraceletSet from '../images/ProductImages/Necklace, Earrings & Bracelet Set.webp';
+  import NecklaceEarringsBraceletSet1 from '../images/ProductImages/Necklace, Earrings & Bracelet Set 1.webp';
+  import NecklaceEarringsBraceletSet2 from '../images/ProductImages/Necklace, Earrings & Bracelet Set 2.webp';
   import TigersEyeBandedAgateBeadNecklace from '../images/ProductImages/Tiger\'s Eye & Banded Agate Bead Necklace.webp';
   import WarmCarnelianSingleStrandNecklace from '../images/ProductImages/Warm Carnelian Single-Strand Necklace.webp';
   import DeepGarnetMultiStrandNecklace from '../images/ProductImages/Deep Garnet Multi-Strand Necklace.webp';
@@ -87,6 +94,14 @@ import type { Category, Collection, Product } from '@/types';
   
   import AmberHoneyDonutRingNecklace2 from '../images/ProductImages/Amber Honey Donut Ring Necklace 2.webp';
   import CobaltBluePatteredBeadChoker2 from '../images/ProductImages/Cobalt Blue Patterned Bead Choker 2.webp';
+  import BlushRoseQuartzOvalBeadNecklace from '../images/ProductImages/Blush Rose Quartz Oval Bead Necklace.webp';
+  import BlushRoseQuartzOvalBeadNecklace2 from '../images/ProductImages/Blush Rose Quartz Oval Bead Necklace 2.webp';
+  import ConfettiAgateOvalNecklace from '../images/ProductImages/Confetti Agate Oval Necklace.webp';
+  import IvoryDropPearlNecklace from '../images/ProductImages/Ivory Drop Pearl Necklace.webp';
+  import MysticDoubleStrandNecklace from '../images/ProductImages/Mystic Double Strand Necklace.webp';
+  import MysticDoubleStrandNecklace2 from '../images/ProductImages/Mystic Double Strand Necklace 2.webp';
+  import RoseQuartzDoubleStrandNecklace from '../images/ProductImages/Rose Quartz Double Strand Necklace.webp';
+  import RoseQuartzTripleStrandNecklace from '../images/ProductImages/Rose Quartz Triple Strand Necklace.webp';
 
 
 
@@ -354,7 +369,7 @@ export const products: Product[] = [
   P(
     'Mystic Amethyst Necklace',
     'GW-N030',
-    799,
+    1799,
     'necklaces',
     {
       description: 'Polished violet beads create a refined single-strand necklace with rich colour and an effortless contemporary statement.',
@@ -410,7 +425,7 @@ P(
 P(
   'Warm Carnelian Single-Strand Necklace',
   'GW-N034',
-  649,
+  899,
   'necklaces',
   {
     description: 'A sleek single-strand necklace featuring warm terracotta-orange disc beads, designed to bring vibrant colour and a refined contemporary finish to everyday outfits.',
@@ -551,18 +566,18 @@ P(
     [CobaltBluePatteredBeadChoker, CobaltBluePatteredBeadChoker2]
   ),
 
-  P(
-    'Earthtone Agate Tube Choker',
-    'GW-N038',
-    599,
-    'necklaces',
-    {
-      description: 'A warm earthtone choker featuring smooth tube-shaped agate beads, bringing an organic and refined finish to everyday and festive looks.',
-      is_new_arrival: true,
-    },
-    ['Earthtone'],
-    [EarthtonAgateTubeChoker]
-  ),
+  // P(
+  //   'Earthtone Agate Tube Choker',
+  //   'GW-N038',
+  //   599,
+  //   'necklaces',
+  //   {
+  //     description: 'A warm earthtone choker featuring smooth tube-shaped agate beads, bringing an organic and refined finish to everyday and festive looks.',
+  //     is_new_arrival: true,
+  //   },
+  //   ['Earthtone'],
+  //   [EarthtonAgateTubeChoker]
+  // ),
 
   P(
     'Sky Blue Turquoise Cross Necklace',
@@ -590,6 +605,149 @@ P(
     },
     ['Autumn Blush', 'Honey Ochre Brown', 'Multi Tourmaline Mix', 'Deep Teal Blue', 'Olive Green', 'Ruby Pink', 'Smoky Green', 'Honey Orange', 'Emerald Green', 'Amber Yellow', 'Soft Rose', 'Fluorite Blue'],
     [SunsetKorianQuartzNecklace, SunsetKorianQuartzNecklace2, SunsetKorianQuartzNecklace3, SunsetKorianQuartzNecklace4, SunsetKorianQuartzNecklace5]
+  ),
+
+  P(
+    'Mystic Double Strand Necklace',
+    'GW-N041',
+    799,
+    'necklaces',
+    {
+      description: 'Elevate your elegance with the Mystic Double Strand Necklace, featuring two luxurious layers of polished, round violet gemstone beads that bring a sophisticated, grounding finish to any look.\n\nDiscover this handcrafted natural gemstone necklace, designed with smooth, rich violet beads that bring an organic touch to your wardrobe. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile accessory pairs effortlessly with both chic traditional attire and modern wear.',
+      is_new_arrival: true,
+    },
+    ['Soft Pink', 'Sunset Orange', 'Violet', 'Crimson Red', 'Dusty Lavender', 'Bright Pink', 'Turquoise Blue', 'Wine & Teal' , 'Black'],
+    [MysticDoubleStrandNecklace, MysticDoubleStrandNecklace2]
+  ),
+
+  P(
+    'Blush Rose Quartz Oval Bead Necklace',
+    'GW-N042',
+    599,
+    'necklaces',
+    {
+      description: 'Blush Rose Quartz Oval Bead Necklace | Natural Pink Gemstone Jewelry Gift\n\nExude gentle elegance with the Blush Rose Quartz Oval Bead Necklace, featuring a smooth strand of polished, oval-cut pink quartz beads that offer a soft and romantic finish to any look.\n\nDiscover this handcrafted natural quartz necklace, designed with soothing pink gemstone beads that bring an organic, graceful touch to your wardrobe. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile accessory pairs effortlessly with both chic western wear and casual daily outfits.',
+      is_new_arrival: true,
+    },
+    ['Rose Quartz'],
+    [BlushRoseQuartzOvalBeadNecklace, BlushRoseQuartzOvalBeadNecklace2]
+  ),
+
+  P(
+    'Rose Quartz Double Strand Necklace',
+    'GW-N043',
+    1099,
+    'necklaces',
+    {
+      description: 'Elevate your style with the Rose Quartz Double Strand Necklace, featuring two luxurious layers of polished round pink quartz beads that bring a rich, layered texture to any ensemble.\n\nDiscover this handcrafted natural gemstone necklace, designed with harmonious double strands of soft pink beads that offer an elevated, timeless appeal. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile statement piece pairs effortlessly with both traditional attire and modern wear.',
+      is_new_arrival: true,
+    },
+    ['Rose Quartz'],
+    [RoseQuartzDoubleStrandNecklace]
+  ),
+
+  P(
+    'Confetti Agate Oval Necklace',
+    'GW-N044',
+    1199,
+    'necklaces',
+    {
+      description: 'Confetti Agate Oval Necklace | Natural Multicolored Gemstone Jewelry Gift\n\nAdd a splash of earthy vibrance to your style with the Confetti Agate Oval Necklace, featuring smooth, statement-making oval agate beads in a rich spectrum of natural multicolored tones.\n\nDiscover this handcrafted natural stone necklace, designed with polished multicolored agate beads that catch the light organically. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile accessory pairs effortlessly with both casual outfits and chic western wear.',
+      is_new_arrival: true,
+    },
+    ['Multi-Colour'],
+    [ConfettiAgateOvalNecklace]
+  ),
+
+  P(
+    'Rainbow Spectrum Agate Necklace',
+    'GW-N045',
+    1199,
+    'necklaces',
+    {
+      description: 'Embrace vibrant, earthy elegance with the Rainbow Spectrum Agate Necklace, featuring a stunning strand of smooth, graduated multicolored agate beads that bring a warm, glowing finish to any outfit.\n\nDiscover this handcrafted natural quartz necklace, designed with vibrant, soothing crystal beads that catch the light organically. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile accessory pairs effortlessly with both chic western wear and casual ethnic attire.',
+      is_new_arrival: true,
+    },
+    ['Multi-Colour'],
+    [RainbowSpectrumAgateNecklace]
+  ),
+
+  // P(
+  //   'Rose Quartz Single Layer Necklace (12mm)',
+  //   'GW-N046',
+  //   799,
+  //   'necklaces',
+  //   {
+  //     description: 'Embrace tender warmth with the Blush Rose Quartz Round Bead Necklace, featuring a classic single strand of smooth, polished round pink quartz beads that radiate gentle charm.\n\nDiscover this handcrafted natural quartz necklace, designed with vibrant pink gemstone beads that catch the light organically. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile accessory pairs effortlessly with both casual outfits and festive wear.',
+  //     is_new_arrival: true,
+  //   },
+  //   ['Rose Quartz'],
+  //   [BlushRoseQuartzNecklace, BlushRoseQuartzNecklace2]
+  // ),
+
+  P(
+    'Necklace, Earrings & Bracelet Set',
+    'GW-N047',
+    799,
+    'necklaces',
+    {
+      description: 'Embrace effortless elegance with this Complete Matching Jewelry Set, featuring a harmonious ensemble of smooth, polished round natural gemstone beads that radiate a rich, sunlit glow and timeless sophistication.\n\nDiscover this handcrafted natural gemstone jewelry set, designed with vibrant, eye-catching hues that catch the light effortlessly. Perfect as a healing crystal jewelry set or a meaningful handmade gift, this versatile matching necklace, earring, and bracelet collection pairs seamlessly with both traditional ethnic attire and chic modern wear.',
+      is_new_arrival: true,
+    },
+    ['Golden Honey Amber', 'Raspberry Pink', 'Mocha Brown'],
+    [NecklaceEarringsBraceletSet, NecklaceEarringsBraceletSet1, NecklaceEarringsBraceletSet2]
+  ),
+
+  P(
+    'Mystic Triple Strand Necklace',
+    'GW-N048',
+    1199,
+    'necklaces',
+    {
+      description: 'Elevate your elegance with the Mystic Triple Strand Necklace, featuring three luxurious layers of polished, round violet gemstone beads that bring a sophisticated, grounding finish to any look.\n\nDiscover this handcrafted natural gemstone necklace, designed with smooth, rich violet beads that bring an organic touch to your wardrobe. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile accessory pairs effortlessly with both chic traditional attire and modern wear.',
+      is_new_arrival: true,
+    },
+    ['Soft Pink', 'Sunset Orange', 'Violet', 'Crimson Red', 'Dusty Lavender', 'Bright Pink', 'Turquoise Blue', 'Wine & Teal', 'Aqua & Violet Gradient'],
+    [MysticTripleStrandNecklace, MysticTripleStrandNecklace2]
+  ),
+
+  P(
+    'Ivory Drop Pearl Necklace',
+    'GW-N049',
+    549,
+    'necklaces',
+    {
+      description: 'Exude subtle elegance with the Ivory Drop Pearl Necklace, featuring a luminous strand of polished, teardrop-shaped white beads that catch the light with a soft, timeless glow.\n\nDiscover this handcrafted natural gemstone necklace, designed with smooth, organic drop beads that bring a graceful and sophisticated touch to your wardrobe. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile accessory pairs effortlessly with both chic western wear and classic ethnic attire.',
+      is_new_arrival: true,
+    },
+    ['White'],
+    [IvoryDropPearlNecklace]
+  ),
+
+  P(
+    'Rose Quartz Triple Strand Necklace',
+    'GW-N050',
+    1499,
+    'necklaces',
+    {
+      description: 'Elevate your style with the Rose Quartz Triple Strand Necklace, featuring three luxurious layers of polished round pink quartz beads that bring a rich, layered texture to any ensemble.\n\nDiscover this handcrafted natural gemstone necklace, designed with harmonious triple strands of soft pink beads that offer an elevated, timeless appeal. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile statement piece pairs effortlessly with both traditional attire and modern wear.',
+      is_new_arrival: true,
+    },
+    ['Rose Quartz'],
+    [RoseQuartzTripleStrandNecklace]
+  ),
+
+  P(
+    'Azure Sea Turquoise Bead Necklace',
+    'GW-N051',
+    599,
+    'necklaces',
+    {
+      description: 'Embrace serene coastal vibes with the Azure Sea Turquoise Bead Necklace, featuring a stunning strand of bold, smooth turquoise-toned beads that offer a bright and refreshing pop of color.\n\nDiscover this handcrafted natural gemstone necklace, designed with vibrant blue beads that bring an organic, lively touch to your wardrobe. Perfect as a healing crystal necklace or a meaningful handmade jewellery gift, this versatile accessory pairs effortlessly with both casual daily wear and festive outfits.',
+      is_new_arrival: true,
+    },
+    ['Turquoise Blue'],
+    [AzureSeaTurquoiseBeadNecklace]
   ),
 
   // Bracelets

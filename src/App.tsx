@@ -20,18 +20,59 @@ import { FaqPage } from '@/pages/FaqPage';
 import { ShippingReturnsPage } from '@/pages/ShippingReturnsPage';
 import { AdminDashboard } from '@/pages/AdminDashboard';
 
+type FacebookPixel = ((...args: unknown[]) => void) & {
+  callMethod?: (...args: unknown[]) => void;
+  queue: unknown[][];
+  push: (...args: unknown[]) => void;
+  loaded: boolean;
+  version: string;
+};
+
+type FacebookPixelWindow = Window & {
+  fbq?: FacebookPixel;
+  _fbq?: FacebookPixel;
+};
+
+const META_PIXEL_ID = '1397407792466971';
+
 function MetaPixelTracker() {
   const location = useLocation();
 
   useEffect(() => {
-    const fbq = (window as any).fbq;
+    if (location.pathname !== '/shop') return;
 
-    if (typeof fbq === 'function') {
-      fbq('track', 'PageView', {
-        page_path: location.pathname + location.search,
-        page_title: document.title,
+    const pixelWindow = window as FacebookPixelWindow;
+    let fbq = pixelWindow.fbq;
+
+    if (!fbq) {
+      const pixel = ((...args: unknown[]) => {
+        if (pixel.callMethod) pixel.callMethod(...args);
+        else pixel.queue.push(args);
+      }) as FacebookPixel;
+
+      Object.assign(pixel, {
+        queue: [],
+        push: (...args: unknown[]) => pixel.queue.push(args),
+        loaded: true,
+        version: '2.0',
       });
+
+      pixelWindow.fbq = pixel;
+      if (!pixelWindow._fbq) pixelWindow._fbq = pixel;
+
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+      document.head.append(script);
+
+      fbq = pixel;
+      fbq('init', META_PIXEL_ID);
     }
+
+    fbq('track', 'PageView', {
+      page_path: location.pathname + location.search,
+      page_title: document.title,
+    });
   }, [location.pathname, location.search]);
 
   return null;

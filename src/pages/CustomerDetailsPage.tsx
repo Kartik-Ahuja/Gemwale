@@ -10,10 +10,15 @@ import { OrnamentalDivider } from '@/components/Ornaments';
 import type { Customer } from '@/types';
 
 export function CustomerDetailsPage() {
-  const { cart, cartTotal, clearCart } = useStore();
+  const {
+    cart, cartTotal, clearCart, couponCode, couponDiscount, checkoutTotal,
+    applyCoupon, removeCoupon,
+  } = useStore();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [couponInput, setCouponInput] = useState('');
+  const [couponMessage, setCouponMessage] = useState('');
   const [form, setForm] = useState<Customer>({
     full_name: '',
     phone: '',
@@ -26,6 +31,19 @@ export function CustomerDetailsPage() {
   });
 
   const set = (k: keyof Customer, v: string) => setForm((f) => ({ ...f, [k]: v }));
+
+  const handleApplyCoupon = (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = applyCoupon(couponInput);
+    setCouponMessage(
+      result === 'applied'
+        ? 'Coupon applied! You saved 10%.'
+        : result === 'minimum'
+          ? 'This coupon is valid on orders above ₹799.'
+          : 'Invalid coupon code.',
+    );
+    if (result === 'applied') setCouponInput('');
+  };
 
   if (cart.length === 0 && !loading) {
     return (
@@ -67,7 +85,10 @@ export function CustomerDetailsPage() {
           const orderRef = doc(collection(db, 'orders'));
           await setDoc(orderRef, {
             order_id: orderId,
-            total: cartTotal,
+            total: checkoutTotal,
+            subtotal: cartTotal,
+            coupon_code: couponCode || null,
+            discount: couponDiscount,
             order_status: 'WhatsApp Contacted',
             payment_status: 'Pending',
             customers: {
@@ -119,7 +140,7 @@ ORDER DETAILS
 
 ${itemLines}
 
-TOTAL: ₹${cartTotal.toLocaleString('en-IN')}
+${couponDiscount > 0 ? `COUPON: ${couponCode}\nDISCOUNT: −₹${couponDiscount.toLocaleString('en-IN')}\n` : ''}TOTAL: ₹${checkoutTotal.toLocaleString('en-IN')}
 
 Please confirm availability and share payment details.`;
 
@@ -130,9 +151,9 @@ Please confirm availability and share payment details.`;
       // 6. Clear cart and go to success
       clearCart();
       navigate('/order-success', { state: { orderId } });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Checkout failed:', err);
-      setError(err?.message || 'Could not place your order. Please try again.');
+      setError(err instanceof Error ? err.message : 'Could not place your order. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -207,8 +228,43 @@ Please confirm availability and share payment details.`;
                   ))}
                 </div>
                 <div className="mt-5 flex items-center justify-between border-t border-ivory-100/10 pt-5">
+                  <span className="text-xs uppercase tracking-widest text-ivory-100/60">Subtotal</span>
+                  <span className="text-sm text-ivory-100">₹{cartTotal.toLocaleString('en-IN')}</span>
+                </div>
+                <div className="mt-4 border-t border-ivory-100/10 pt-4">
+                  <p className="mb-2 text-xs uppercase tracking-widest text-ivory-100/60">Have a coupon?</p>
+                  {couponCode ? (
+                    <div className="flex items-center justify-between gap-3 text-sm">
+                      <span className="text-gold-300">{couponCode}</span>
+                      <button type="button" onClick={() => { removeCoupon(); setCouponMessage(''); }} className="text-xs text-ivory-100/50 underline hover:text-ivory-100">
+                        Remove
+                      </button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                      <input
+                        aria-label="Coupon code"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value)}
+                        placeholder="Enter coupon code"
+                        className="input-field min-w-0 flex-1 text-sm"
+                      />
+                      <button type="submit" className="btn-outline px-3 text-xs">Apply</button>
+                    </form>
+                  )}
+                  {couponMessage && <p role="status" className="mt-2 text-xs text-gold-300/80">{couponMessage}</p>}
+                  {!couponCode && <p className="mt-2 text-xs text-ivory-100/40">Use VIBECHECK10 for 10% off orders above ₹799.</p>}
+                  {couponCode && cartTotal <= 799 && <p className="mt-2 text-xs text-ivory-100/50">Add items worth ₹{(800 - cartTotal).toLocaleString('en-IN')} more to use this coupon.</p>}
+                </div>
+                {couponDiscount > 0 && (
+                  <div className="mt-4 flex items-center justify-between text-sm text-gold-300">
+                    <span>Coupon discount (10%)</span>
+                    <span>−₹{couponDiscount.toLocaleString('en-IN')}</span>
+                  </div>
+                )}
+                <div className="mt-4 flex items-center justify-between border-t border-ivory-100/10 pt-5">
                   <span className="text-xs uppercase tracking-widest text-ivory-100/60">Total</span>
-                  <span className="font-serif text-2xl text-gold-300">₹{cartTotal.toLocaleString('en-IN')}</span>
+                  <span className="font-serif text-2xl text-gold-300">₹{checkoutTotal.toLocaleString('en-IN')}</span>
                 </div>
               </div>
             </div>
