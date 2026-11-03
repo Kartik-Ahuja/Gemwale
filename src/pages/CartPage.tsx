@@ -134,7 +134,11 @@ export function CartPage() {
           </form>
         )}
         {couponMessage && <p role="status" className="mt-2 text-xs text-gold-300/80">{couponMessage}</p>}
-        {!couponCode && <p className="mt-2 text-xs text-ivory-100/40">Use VIBECHECK10 for 10% off orders above ₹799.</p>}
+        {!couponCode && (
+          <p className="mt-3 rounded border border-gold-400/40 bg-gold-400/10 px-3 py-2 text-xs font-medium text-gold-300">
+            Use VIBECHECK10 for 10% off orders above ₹799.
+          </p>
+        )}
         {couponCode && cartTotal <= 799 && <p className="mt-2 text-xs text-ivory-100/50">Add items worth ₹{(800 - cartTotal).toLocaleString('en-IN')} more to use this coupon.</p>}
       </div>
 

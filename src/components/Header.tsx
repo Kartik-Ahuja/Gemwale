@@ -36,6 +36,12 @@ const categoryLinks = [
   { label: 'Keychains', to: '/category/keychains' },
 ];
 
+const announcements = [
+  'USE CODE VIBECHECK10 FOR A DISCOUNT',
+  'FREE DELIVERY ON ORDERS ABOVE ₹499',
+  'DIWALI SALE — SHOP FESTIVE FAVOURITES',
+];
+
 export function Header() {
   const location = useLocation();
   const isHome = location.pathname === '/';
@@ -64,8 +70,32 @@ export function Header() {
 
   return (
     <>
+      <div
+        className="announcement-bar"
+        role="region"
+        aria-label="Special offers: VIBECHECK10 discount, free delivery above ₹499, and Diwali Sale"
+      >
+        <div className="announcement-track" aria-hidden="true">
+          {[0, 1].map((copy) => (
+            <div className="announcement-group" key={copy}>
+              {announcements.map((announcement) => (
+                <span key={announcement}>
+                  {announcement === 'USE CODE VIBECHECK10 FOR A DISCOUNT' ? (
+                    <>
+                      USE CODE <strong className="announcement-code">VIBECHECK10</strong> FOR A
+                      DISCOUNT
+                    </>
+                  ) : (
+                    announcement
+                  )}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${headerClasses}`}
+        className={`fixed inset-x-0 top-12 sm:top-10 z-50 transition-all duration-500 ${headerClasses}`}
       >
         <div className="container-editorial flex h-16 items-center justify-between lg:h-20">
           {/* Left: logo */}
